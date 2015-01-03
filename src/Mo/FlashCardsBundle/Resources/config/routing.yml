@@ -1,0 +1,3 @@
+_api_cards:
+    path:     /cards/{group}
+    defaults: { _controller: MoFlashCardsBundle:Api:cards }
