@@ -47,7 +47,6 @@ assetic:
         bootstrap_css:
             inputs:
                 - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap.min.css'
-                - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap-theme.min.css'
         jquery_js:
             inputs:
                 - '%kernel.root_dir%/../vendor/components/jquery/jquery.min.js'
