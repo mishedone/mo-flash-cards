@@ -1,7 +1,7 @@
-mo_flash_cards:
+_flash_cards:
     resource: "@MoFlashCardsBundle/Resources/config/routing.yml"
     prefix:   /
 
-app:
+_app:
     resource: @AppBundle/Controller/
     type:     annotation
