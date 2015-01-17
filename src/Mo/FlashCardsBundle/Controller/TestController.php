@@ -14,6 +14,11 @@ class TestController extends Controller
      */
     public function jasmineAction()
     {
+        // turn off profiler since it is not needed here
+        if ($this->container->has('profiler')) {
+            $this->container->get('profiler')->disable();
+        }
+        
         return $this->render('MoFlashCardsBundle:Test:jasmine.html.twig');
     }
 }
