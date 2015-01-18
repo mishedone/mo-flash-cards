@@ -1,26 +1,32 @@
-{% extends 'base.html.twig' %}
+{% extends 'MoFlashCardsBundle::layout.html.twig' %}
 
 {% block title %}Group - learn your cards{% endblock %}
 
-{% block body %}
+{% block content %}
     <div class="container">
         <div class="row">
-            Котка
-            <input type="text" class="form-control" placeholder="Как е?">
-            <a href="#" class="btn btn-primary">Провери</a>
+            <div id="card-player-question">Зареждам въпросите...</div>
+            <input id="card-player-answer" type="text" class="form-control" placeholder="Как е?">
+            <button id="card-player-check" class="btn btn-primary">Провери</button>
             <a href="#" class="btn btn-default">Подскажи</a>
         </div>
     </div>
 {% endblock %}
 
-{% block stylesheets %}
-    {% stylesheets '@bootstrap_css' filter='cssrewrite' %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
-    {% endstylesheets %}
-{% endblock %}
-
 {% block javascripts %}
-    {% javascripts '@jquery_js' %}
+    {% javascripts 
+        '@jquery_js'
+        '@MoFlashCardsBundle/Resources/public/js/CardPlayer.js' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
+        
+    <script>
+        $(document).ready(function() {
+            var player = new CardPlayer();
+            player.addCard('cat', 'котка');
+            player.addCard('dog', 'куче');
+            player.addCard('rat', 'плъх');
+            player.initialize();
+        });
+    </script>
 {% endblock %}
