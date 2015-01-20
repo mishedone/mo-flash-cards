@@ -6,9 +6,8 @@
     <div class="container">
         <div class="row">
             <div id="card-player-question">Зареждам въпросите...</div>
-            <input id="card-player-answer" type="text" class="form-control" placeholder="Как е?">
-            <button id="card-player-check" class="btn btn-primary">Провери</button>
-            <a href="#" class="btn btn-default">Подскажи</a>
+            <input id="card-player-answer" type="text" class="form-control">
+            <a href="#" class="btn btn-default btn-primary">Подскажи</a>
         </div>
     </div>
 {% endblock %}
@@ -26,7 +25,7 @@
             player.addCard('cat', 'котка');
             player.addCard('dog', 'куче');
             player.addCard('rat', 'плъх');
-            player.initialize();
+            player.start();
         });
     </script>
 {% endblock %}
