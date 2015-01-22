@@ -99,9 +99,9 @@ $(document).ready(function() {
                 player = createCardPlayer('full');
                 player.loadNextCard();
             });
-            it('by loading the next card if correct', function() {
+            it('by loading the next card if correct (even if case does not match)', function() {
                 spyOn(player, 'loadNextCard');
-                player.answer.val('котка');
+                player.answer.val('коТКа');
                 player.answerCurrentCard();
                 expect(player.loadNextCard).toHaveBeenCalled();
             });

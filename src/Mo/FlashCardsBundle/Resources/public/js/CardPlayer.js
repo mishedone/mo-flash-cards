@@ -81,7 +81,7 @@ CardPlayer.prototype.loadNextCard = function(clearHint) {
  * Checks if the typed in answer is the same as the current question's answer.
  */
 CardPlayer.prototype.answerCurrentCard = function() {
-    if (this.answer.val() === this.getCorrectAnswer()) {
+    if (this.answer.val().toLowerCase() === this.getCorrectAnswer().toLowerCase()) {
         this.loadNextCard();
     }
 };
