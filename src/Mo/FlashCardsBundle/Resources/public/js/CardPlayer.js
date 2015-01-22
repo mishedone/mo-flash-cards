@@ -116,4 +116,6 @@ CardPlayer.prototype.start = function() {
 CardPlayer.prototype.finish = function() {
     this.question.html(this.finishMessage);
     this.answer.val('');
+    this.answer.off('keyup');
+    this.showHint.off('click');
 };

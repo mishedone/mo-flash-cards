@@ -151,8 +151,11 @@ $(document).ready(function() {
         
         describe('can be finished', function() {
             beforeAll(function() {
-                player = createCardPlayer('empty');
+                player = createCardPlayer('full');
+                player.start();
                 player.answer.val('great');
+                spyOn(player, 'answerCurrentCard');
+                spyOn(player, 'showCurrentCardHint');
                 player.finish();
             });
             it('by showing the finished message', function() {
@@ -160,6 +163,14 @@ $(document).ready(function() {
             });
             it('by removing the last answer', function() {
                 expect(player.answer.val()).toEqual('');
+            });
+            it('by not watching for a correct answer anymore', function() {
+                player.answer.keyup();
+                expect(player.answerCurrentCard).not.toHaveBeenCalled();
+            });
+            it('by not watching for clicks on the show hint button anymore', function() {
+                player.showHint.click();
+                expect(player.showCurrentCardHint).not.toHaveBeenCalled();
             });
         });
     });
