@@ -2,7 +2,6 @@
  * The main learning weapon - this player should play the cards to the user so
  * he can learn them.
  * 
- * @todo implement hint system
  * @param {Object} options Initialize the player.
  */
 function CardPlayer(options) {
@@ -11,6 +10,10 @@ function CardPlayer(options) {
     // define default options
     self.questionId = 'card-player-question';
     self.answerId = 'card-player-answer';
+    self.hintId = 'card-player-hint';
+    self.showHintId = 'card-player-show-hint';
+    
+    // define messages
     self.finishMessage = 'No more cards to learn.';
     
     // update the options based on the passed JSON
@@ -27,6 +30,8 @@ function CardPlayer(options) {
     // select controls
     self.question = $('#' + self.questionId);
     self.answer = $('#' + self.answerId);
+    self.hint = $('#' + self.hintId);
+    self.showHint = $('#' + self.showHintId);
 };
 
 /**
@@ -40,10 +45,27 @@ CardPlayer.prototype.addCard = function(question, answer) {
 };
 
 /**
- * Loads the next card into the player.
+ * Returns the correct answer for the currently loaded card.
+ * 
+ * @returns {string}
  */
-CardPlayer.prototype.loadNextCard = function() {
+CardPlayer.prototype.getCorrectAnswer = function() {
+    return this.cards[this.currentIndex].answer;
+};
+
+/**
+ * Loads the next card into the player.
+ * 
+ * @param {boolean} clearHint Default: true.
+ */
+CardPlayer.prototype.loadNextCard = function(clearHint) {
     var nextIndex = this.currentIndex === null ? 0 : this.currentIndex + 1;
+    
+    // clear hint if asked
+    clearHint = typeof clearHint !== 'undefined' ? clearHint : true;
+    if (clearHint) {
+        this.hint.html('');
+    }
     
     // update properties
     if (typeof this.cards[nextIndex] !== 'undefined') {
@@ -59,12 +81,17 @@ CardPlayer.prototype.loadNextCard = function() {
  * Checks if the typed in answer is the same as the current question's answer.
  */
 CardPlayer.prototype.answerCurrentCard = function() {
-    var correctAnswer = this.cards[this.currentIndex].answer;
-    
-    // check if answers match
-    if (this.answer.val() === correctAnswer) {
+    if (this.answer.val() === this.getCorrectAnswer()) {
         this.loadNextCard();
     }
+};
+
+/**
+ * Shows a hint for the currently loaded card and loads the next one.
+ */
+CardPlayer.prototype.showCurrentCardHint = function() {
+    this.hint.html(this.getCorrectAnswer());
+    this.loadNextCard(false);
 };
 
 /**
@@ -77,6 +104,9 @@ CardPlayer.prototype.start = function() {
     this.loadNextCard();
     this.answer.keyup(function() {
         player.answerCurrentCard();
+    });
+    this.showHint.click(function() {
+        player.showCurrentCardHint();
     });
 };
 

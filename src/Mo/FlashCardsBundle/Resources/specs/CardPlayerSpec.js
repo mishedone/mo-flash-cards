@@ -2,7 +2,9 @@ $(document).ready(function() {
     // load fixtures
     $(document.body).append('<div class="card-player-fixture" style="display: none;">' +
         '<span id="card-player-question"></span>' +
+        '<span id="card-player-hint"></span>' +
         '<input type="text" id="card-player-answer">' +
+        '<button id="card-player-show-hint"></button>' + 
         '</div>');
     
     // define specs
@@ -25,6 +27,12 @@ $(document).ready(function() {
             it('knows where answers are typed in', function() {
                 expect(player.answer).toEqual($('#card-player-answer'));
             });
+            it('knows where hints are shown', function() {
+                expect(player.hint).toEqual($('#card-player-hint'));
+            });
+            it('knows when hints are shown', function() {
+                expect(player.showHint).toEqual($('#card-player-show-hint'));
+            });
         });
   
         describe('can add a card', function() {
@@ -38,6 +46,16 @@ $(document).ready(function() {
             });
         });
         
+        describe('can fetch the correct answer for the current card', function() {
+            beforeAll(function() {
+                player = createCardPlayer('full');
+                player.loadNextCard();
+            });
+            it('by checking the current card answer', function() {
+                expect(player.getCorrectAnswer()).toEqual('котка');
+            });
+        });
+        
         describe('can load the next card', function() {
             beforeEach(function() {
                 player = createCardPlayer('full');
@@ -46,16 +64,26 @@ $(document).ready(function() {
                 player.loadNextCard();
                 expect(player.currentIndex).toEqual(0);
             });
+            it('by showing it\'s question', function() {
+                player.loadNextCard();
+                expect(player.question.html()).toEqual('cat');
+            });
             it('by removing the previous answer', function() {
                 player.answer.val('come on');
                 player.loadNextCard();
                 expect(player.answer.val()).toEqual('');
             });
-            it('by showing it\'s question', function() {
+            it('by clearing the hint by default', function() {
+                player.hint.html('some good old hint');
                 player.loadNextCard();
-                expect(player.question.html()).toEqual('cat');
+                expect(player.hint.html()).toEqual('');
             });
-            it('unless there are no more left - finish the player if so', function() {
+            it('by not clearing the hint if asked', function() {
+                player.hint.html('some good old hint');
+                player.loadNextCard(false);
+                expect(player.hint.html()).toEqual('some good old hint');
+            });
+            it('by finishing the player if there are no more left', function() {
                 spyOn(player, 'finish');
                 for (var i = 0; i <= 3; i++) { 
                     player.loadNextCard();
@@ -85,11 +113,27 @@ $(document).ready(function() {
             });
         });
         
+        describe('can show a hint for the current card', function() {
+            beforeAll(function() {
+                player = createCardPlayer('full');
+                player.loadNextCard();
+                spyOn(player, 'loadNextCard');
+                player.showCurrentCardHint();
+            });
+            it('by showing the correct answer', function() {
+                expect(player.hint.html()).toEqual('котка');
+            });
+            it('by loading the next card (but without clearing it)', function() {
+                expect(player.loadNextCard).toHaveBeenCalledWith(false);
+            });
+        });
+        
         describe('can be started', function() {
             beforeAll(function() {
                 player = createCardPlayer('full');
                 spyOn(player, 'loadNextCard');
                 spyOn(player, 'answerCurrentCard');
+                spyOn(player, 'showCurrentCardHint');
                 player.start();
             });
             it('by loading the first card', function() {
@@ -98,6 +142,10 @@ $(document).ready(function() {
             it('by watching for a correct answer each time the user types in something', function() {
                 player.answer.keyup();
                 expect(player.answerCurrentCard).toHaveBeenCalled();
+            });
+            it('by watching for clicks on the show hint button', function() {
+                player.showHint.click();
+                expect(player.showCurrentCardHint).toHaveBeenCalled();
             });
         });
         
