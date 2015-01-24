@@ -1,13 +1,13 @@
 {% extends 'MoFlashCardsBundle::layout.html.twig' %}
 
-{% block title %}Group - learn your cards{% endblock %}
+{% block title %}{{ 'learnCards.meta.title'|trans({'%deck%': 'Deck'}) }}{% endblock %}
 
 {% block content %}
     <div class="container">
         <div class="row">
-            <div id="card-player-question">Зареждам въпросите...</div>
-            <input id="card-player-answer" type="text" class="form-control">
-            <button id="card-player-show-hint" class="btn btn-default btn-primary">Подскажи</button>
+            <div id="card-player-question">{{ 'learnCards.message.loading'|trans }}</div>
+            <input id="card-player-answer" type="text" class="form-control" placeholder="{{ 'learnCards.form.placeholder.answer'|trans }}">
+            <button id="card-player-show-hint" class="btn btn-default btn-primary">{{ 'learnCards.action.hint'|trans }}</button>
             <div id="card-player-hint"></div>
         </div>
     </div>
@@ -22,7 +22,9 @@
         
     <script>
         $(document).ready(function() {
-            var player = new CardPlayer();
+            var player = new CardPlayer({
+                finishMessage: '{{ 'learnCards.message.finish'|trans }}'
+            });
             player.addCard('cat', 'котка');
             player.addCard('dog', 'куче');
             player.addCard('rat', 'плъх');

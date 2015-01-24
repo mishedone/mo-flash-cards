@@ -5,5 +5,5 @@ _api_cards:
 
 # learn routes
 _learn_cards:
-    path:     /learn/cards/{group}
+    path:     /{_locale}/learn/cards/{group}
     defaults: { _controller: MoFlashCardsBundle:Learn:cards }
