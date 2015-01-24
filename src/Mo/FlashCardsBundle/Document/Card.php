@@ -20,11 +20,27 @@ class Card
     protected $back;
     
     /**
+     * @return string
+     */
+    public function getFront()
+    {
+        return $this->front;
+    }
+    
+    /**
      * @param string $front
      */
     public function setFront($front)
     {
         $this->front = $front;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getBack()
+    {
+        return $this->back;
     }
     
     /**

@@ -47,6 +47,14 @@ class Deck
     }
     
     /**
+     * @return array
+     */
+    public function getCards()
+    {
+        return $this->cards;
+    }
+    
+    /**
      * @param \Mo\FlashCardsBundle\Document\Card $card
      */
     public function addCard(Card $card)

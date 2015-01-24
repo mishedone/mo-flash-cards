@@ -1,6 +1,6 @@
 # api routes
 _api_cards:
-    path:     /api/cards/{deck}
+    path:     /api/cards/{deckSlug}
     defaults: { _controller: MoFlashCardsBundle:Api:cards }
 
 # learn routes
