@@ -51,6 +51,17 @@ assetic:
             inputs:
                 - '%kernel.root_dir%/../vendor/components/jquery/jquery.min.js'
 
+# MongoDB Configuration
+doctrine_mongodb:
+    connections:
+        default:
+            server: "%mongo_server%"
+            options: {}
+    default_database: "%mongo_database%"
+    document_managers:
+        default:
+            auto_mapping: true
+
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"

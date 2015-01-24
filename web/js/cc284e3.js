@@ -3442,20 +3442,19 @@ jasmineRequire.QueryString = function() {
  * The main learning weapon - this player should play the cards to the user so
  * he can learn them.
  * 
- * @todo implement error system
- * @todo implement hint system
  * @param {Object} options Initialize the player.
  */
 function CardPlayer(options) {
     var self = this;
     
     // define default options
-    self.cards = [];
-    self.current = null;
-    self.currentIndex = null;
     self.questionId = 'card-player-question';
     self.answerId = 'card-player-answer';
-    self.checkId = 'card-player-check';
+    self.hintId = 'card-player-hint';
+    self.showHintId = 'card-player-show-hint';
+    
+    // define messages
+    self.finishMessage = 'No more cards to learn.';
     
     // update the options based on the passed JSON
     for (var key in options) {
@@ -3463,6 +3462,16 @@ function CardPlayer(options) {
             self[key] = options[key];
         }
     }
+    
+    // define properties
+    self.cards = [];
+    self.currentIndex = null;
+    
+    // select controls
+    self.question = $('#' + self.questionId);
+    self.answer = $('#' + self.answerId);
+    self.hint = $('#' + self.hintId);
+    self.showHint = $('#' + self.showHintId);
 };
 
 /**
@@ -3476,140 +3485,254 @@ CardPlayer.prototype.addCard = function(question, answer) {
 };
 
 /**
- * Initializes the player by loading the first card and binding events.
+ * Returns the correct answer for the currently loaded card.
+ * 
+ * @returns {string}
  */
-CardPlayer.prototype.initialize = function() {
+CardPlayer.prototype.getCorrectAnswer = function() {
+    return this.cards[this.currentIndex].answer;
+};
+
+/**
+ * Loads the next card into the player.
+ * 
+ * @param {boolean} clearHint Default: true.
+ */
+CardPlayer.prototype.loadNextCard = function(clearHint) {
+    var nextIndex = this.currentIndex === null ? 0 : this.currentIndex + 1;
+    
+    // clear hint if asked
+    clearHint = typeof clearHint !== 'undefined' ? clearHint : true;
+    if (clearHint) {
+        this.hint.html('');
+    }
+    
+    // update properties
+    if (typeof this.cards[nextIndex] !== 'undefined') {
+        this.currentIndex = nextIndex;
+        this.answer.val('');
+        this.question.html(this.cards[nextIndex].question);
+    } else {
+        this.finish();
+    }
+};
+
+/**
+ * Checks if the typed in answer is the same as the current question's answer.
+ */
+CardPlayer.prototype.answerCurrentCard = function() {
+    if (this.answer.val().toLowerCase() === this.getCorrectAnswer().toLowerCase()) {
+        this.loadNextCard();
+    }
+};
+
+/**
+ * Shows a hint for the currently loaded card and loads the next one.
+ */
+CardPlayer.prototype.showCurrentCardHint = function() {
+    this.hint.html(this.getCorrectAnswer());
+    this.loadNextCard(false);
+};
+
+/**
+ * Starts the player by loading the first card and watching for player typing.
+ */
+CardPlayer.prototype.start = function() {
     var player = this;
-    this.loadCard(0);
-    $('#' + this.checkId).click(function() {
-        player.checkCardAnswer();
+    
+    // run it!
+    this.loadNextCard();
+    this.answer.keyup(function() {
+        player.answerCurrentCard();
+    });
+    this.showHint.click(function() {
+        player.showCurrentCardHint();
     });
 };
 
 /**
- * Loads a card into the player by it's index.
- * 
- * @param {int} index Index of the card to load.
+ * Finishes the playing of cards.
  */
-CardPlayer.prototype.loadCard = function(index) {
-    if (typeof this.cards[index] !== 'undefined') {
-        this.current = this.cards[index];
-        this.currentIndex = index;
-        $('#' + this.questionId).html(this.current.question);
-    }
+CardPlayer.prototype.finish = function() {
+    this.question.html(this.finishMessage);
+    this.answer.val('');
+    this.answer.off('keyup');
+    this.showHint.off('click');
 };
 
-/**
- * Tries answering the current card with the answer typed in.
- */
-CardPlayer.prototype.checkCardAnswer = function() {
-    this.answerCard($('#' + this.answerId).val());
-};
-
-/**
- * Checks if an answer is correct.
- * 
- * @param {string} answer
- */
-CardPlayer.prototype.answerCard = function(answer) {
-    if (answer === this.current.answer) {
-        this.loadCard(this.currentIndex + 1);
-    }
-};
 $(document).ready(function() {
     // load fixtures
     $(document.body).append('<div class="card-player-fixture" style="display: none;">' +
         '<span id="card-player-question"></span>' +
+        '<span id="card-player-hint"></span>' +
         '<input type="text" id="card-player-answer">' +
-        '<a id="card-player-check">Check it!</a>' +
+        '<button id="card-player-show-hint"></button>' + 
         '</div>');
     
     // define specs
     describe('CardPlayer', function() {
-        var player = createCardPlayer('empty'),
-            question = $('#card-player-question'),
-            answer = $('#card-player-answer'),
-            check = $('#card-player-check');
+        var player = null;
         
         describe('when created', function() {
+            beforeAll(function() {
+                player = createCardPlayer('empty');
+            });
             it('has no cards', function() {
                 expect(player.cards).toEqual([]);
             });
-            it('knows where to ask questions', function() {
-                expect(player.questionId).toEqual('card-player-question');
+            it('has no current card loaded', function() {
+                expect(player.currentIndex).toEqual(null);
+            });
+            it('knows where questions are shown', function() {
+                expect(player.question).toEqual($('#card-player-question'));
             });
             it('knows where answers are typed in', function() {
-                expect(player.answerId).toEqual('card-player-answer');
+                expect(player.answer).toEqual($('#card-player-answer'));
             });
-            it('knows how to check an answer', function() {
-                expect(player.checkId).toEqual('card-player-check');
+            it('knows where hints are shown', function() {
+                expect(player.hint).toEqual($('#card-player-hint'));
             });
-            it('knows the current card index', function() {
-                expect(player.currentIndex).toEqual(null);
+            it('knows when hints are shown', function() {
+                expect(player.showHint).toEqual($('#card-player-show-hint'));
             });
         });
   
         describe('can add a card', function() {
-            it('by providing question and answer', function() {
+            beforeAll(function() {
+                player = createCardPlayer('empty');
+            });
+            it('based on question and answer', function() {
                 player.addCard('bat', 'прилеп');
                 expect(player.cards[0].question).toEqual('bat');
                 expect(player.cards[0].answer).toEqual('прилеп');
             });
         });
         
-        describe('can be initialized', function() {
+        describe('can fetch the correct answer for the current card', function() {
             beforeAll(function() {
-                spyOn(player, 'loadCard');
-                spyOn(player, 'checkCardAnswer');
-                player.initialize();
+                player = createCardPlayer('full');
+                player.loadNextCard();
             });
-            it('by loading the first card', function() {
-                expect(player.loadCard).toHaveBeenCalledWith(0);
-            });
-            it('by binding an event watching for card answers', function() {
-                check.click();
-                expect(player.checkCardAnswer).toHaveBeenCalled();
+            it('by checking the current card answer', function() {
+                expect(player.getCorrectAnswer()).toEqual('котка');
             });
         });
         
-        describe('can load a card', function() {
+        describe('can load the next card', function() {
             beforeEach(function() {
                 player = createCardPlayer('full');
             });
             it('by setting it as current', function() {
-                player.loadCard(2);
-                expect(player.current).toEqual({question: 'rat', answer: 'плъх'});
-                expect(player.currentIndex).toEqual(2);
+                player.loadNextCard();
+                expect(player.currentIndex).toEqual(0);
             });
             it('by showing it\'s question', function() {
-                player.loadCard(2);
-                expect(question.html()).toEqual('rat');
+                player.loadNextCard();
+                expect(player.question.html()).toEqual('cat');
             });
-            it('only when the index exists', function() {
-                player.loadCard(22);
-                expect(player.current).toBeNull();
-                expect(question.html()).toEqual('');
+            it('by removing the previous answer', function() {
+                player.answer.val('come on');
+                player.loadNextCard();
+                expect(player.answer.val()).toEqual('');
+            });
+            it('by clearing the hint by default', function() {
+                player.hint.html('some good old hint');
+                player.loadNextCard();
+                expect(player.hint.html()).toEqual('');
+            });
+            it('by not clearing the hint if asked', function() {
+                player.hint.html('some good old hint');
+                player.loadNextCard(false);
+                expect(player.hint.html()).toEqual('some good old hint');
+            });
+            it('by finishing the player if there are no more left', function() {
+                spyOn(player, 'finish');
+                for (var i = 0; i <= 3; i++) { 
+                    player.loadNextCard();
+                }
+                expect(player.finish).not.toHaveBeenCalled();
+                player.loadNextCard();
+                expect(player.finish).toHaveBeenCalled();
             });
         });
         
-        describe('can check card answers', function() {
-            it('by comparing them to the real ones', function() {
-                answer.val('kitty');
-                spyOn(player, 'answerCard');
-                player.checkCardAnswer();
-                expect(player.answerCard).toHaveBeenCalledWith('kitty');
-            });
-        });
-        
-        describe('can answer a card', function() {
+        describe('can answer the current card', function() {
             beforeEach(function() {
                 player = createCardPlayer('full');
-                player.loadCard(1);
+                player.loadNextCard();
             });
-            it('by loading the next card if correct', function() {
-                spyOn(player, 'loadCard');
-                player.answerCard('куче');
-                expect(player.loadCard).toHaveBeenCalledWith(2);
+            it('by loading the next card if correct (even if case does not match)', function() {
+                spyOn(player, 'loadNextCard');
+                player.answer.val('коТКа');
+                player.answerCurrentCard();
+                expect(player.loadNextCard).toHaveBeenCalled();
+            });
+            it('by doing nothing if incorrect', function() {
+                spyOn(player, 'loadNextCard');
+                player.answer.val('котк');
+                player.answerCurrentCard();
+                expect(player.loadNextCard).not.toHaveBeenCalled();
+            });
+        });
+        
+        describe('can show a hint for the current card', function() {
+            beforeAll(function() {
+                player = createCardPlayer('full');
+                player.loadNextCard();
+                spyOn(player, 'loadNextCard');
+                player.showCurrentCardHint();
+            });
+            it('by showing the correct answer', function() {
+                expect(player.hint.html()).toEqual('котка');
+            });
+            it('by loading the next card (but without clearing it)', function() {
+                expect(player.loadNextCard).toHaveBeenCalledWith(false);
+            });
+        });
+        
+        describe('can be started', function() {
+            beforeAll(function() {
+                player = createCardPlayer('full');
+                spyOn(player, 'loadNextCard');
+                spyOn(player, 'answerCurrentCard');
+                spyOn(player, 'showCurrentCardHint');
+                player.start();
+            });
+            it('by loading the first card', function() {
+                expect(player.loadNextCard).toHaveBeenCalled();
+            });
+            it('by watching for a correct answer each time the user types in something', function() {
+                player.answer.keyup();
+                expect(player.answerCurrentCard).toHaveBeenCalled();
+            });
+            it('by watching for clicks on the show hint button', function() {
+                player.showHint.click();
+                expect(player.showCurrentCardHint).toHaveBeenCalled();
+            });
+        });
+        
+        describe('can be finished', function() {
+            beforeAll(function() {
+                player = createCardPlayer('full');
+                player.start();
+                player.answer.val('great');
+                spyOn(player, 'answerCurrentCard');
+                spyOn(player, 'showCurrentCardHint');
+                player.finish();
+            });
+            it('by showing the finished message', function() {
+                expect(player.question.html()).toEqual('No more cards to learn.');
+            });
+            it('by removing the last answer', function() {
+                expect(player.answer.val()).toEqual('');
+            });
+            it('by not watching for a correct answer anymore', function() {
+                player.answer.keyup();
+                expect(player.answerCurrentCard).not.toHaveBeenCalled();
+            });
+            it('by not watching for clicks on the show hint button anymore', function() {
+                player.showHint.click();
+                expect(player.showCurrentCardHint).not.toHaveBeenCalled();
             });
         });
     });
@@ -3623,7 +3746,8 @@ $(document).ready(function() {
  */
 function createCardPlayer(type) {
     var player = new CardPlayer();
-    $('#' + player.questionId).html('');
+    $('#card-player-question').html('');
+    $('#card-player-answer').val('');
     
     // add cards for each available type
     switch (type) {

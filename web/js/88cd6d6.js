@@ -7,20 +7,19 @@
  * The main learning weapon - this player should play the cards to the user so
  * he can learn them.
  * 
- * @todo implement error system
- * @todo implement hint system
  * @param {Object} options Initialize the player.
  */
 function CardPlayer(options) {
     var self = this;
     
     // define default options
-    self.cards = [];
-    self.current = null;
-    self.currentIndex = null;
     self.questionId = 'card-player-question';
     self.answerId = 'card-player-answer';
-    self.checkId = 'card-player-check';
+    self.hintId = 'card-player-hint';
+    self.showHintId = 'card-player-show-hint';
+    
+    // define messages
+    self.finishMessage = 'No more cards to learn.';
     
     // update the options based on the passed JSON
     for (var key in options) {
@@ -28,6 +27,16 @@ function CardPlayer(options) {
             self[key] = options[key];
         }
     }
+    
+    // define properties
+    self.cards = [];
+    self.currentIndex = null;
+    
+    // select controls
+    self.question = $('#' + self.questionId);
+    self.answer = $('#' + self.answerId);
+    self.hint = $('#' + self.hintId);
+    self.showHint = $('#' + self.showHintId);
 };
 
 /**
@@ -41,43 +50,77 @@ CardPlayer.prototype.addCard = function(question, answer) {
 };
 
 /**
- * Initializes the player by loading the first card and binding events.
+ * Returns the correct answer for the currently loaded card.
+ * 
+ * @returns {string}
  */
-CardPlayer.prototype.initialize = function() {
+CardPlayer.prototype.getCorrectAnswer = function() {
+    return this.cards[this.currentIndex].answer;
+};
+
+/**
+ * Loads the next card into the player.
+ * 
+ * @param {boolean} clearHint Default: true.
+ */
+CardPlayer.prototype.loadNextCard = function(clearHint) {
+    var nextIndex = this.currentIndex === null ? 0 : this.currentIndex + 1;
+    
+    // clear hint if asked
+    clearHint = typeof clearHint !== 'undefined' ? clearHint : true;
+    if (clearHint) {
+        this.hint.html('');
+    }
+    
+    // update properties
+    if (typeof this.cards[nextIndex] !== 'undefined') {
+        this.currentIndex = nextIndex;
+        this.answer.val('');
+        this.question.html(this.cards[nextIndex].question);
+    } else {
+        this.finish();
+    }
+};
+
+/**
+ * Checks if the typed in answer is the same as the current question's answer.
+ */
+CardPlayer.prototype.answerCurrentCard = function() {
+    if (this.answer.val().toLowerCase() === this.getCorrectAnswer().toLowerCase()) {
+        this.loadNextCard();
+    }
+};
+
+/**
+ * Shows a hint for the currently loaded card and loads the next one.
+ */
+CardPlayer.prototype.showCurrentCardHint = function() {
+    this.hint.html(this.getCorrectAnswer());
+    this.loadNextCard(false);
+};
+
+/**
+ * Starts the player by loading the first card and watching for player typing.
+ */
+CardPlayer.prototype.start = function() {
     var player = this;
-    this.loadCard(0);
-    $('#' + this.checkId).click(function() {
-        player.checkCardAnswer();
+    
+    // run it!
+    this.loadNextCard();
+    this.answer.keyup(function() {
+        player.answerCurrentCard();
+    });
+    this.showHint.click(function() {
+        player.showCurrentCardHint();
     });
 };
 
 /**
- * Loads a card into the player by it's index.
- * 
- * @param {int} index Index of the card to load.
+ * Finishes the playing of cards.
  */
-CardPlayer.prototype.loadCard = function(index) {
-    if (typeof this.cards[index] !== 'undefined') {
-        this.current = this.cards[index];
-        this.currentIndex = index;
-        $('#' + this.questionId).html(this.current.question);
-    }
-};
-
-/**
- * Tries answering the current card with the answer typed in.
- */
-CardPlayer.prototype.checkCardAnswer = function() {
-    this.answerCard($('#' + this.answerId).val());
-};
-
-/**
- * Checks if an answer is correct.
- * 
- * @param {string} answer
- */
-CardPlayer.prototype.answerCard = function(answer) {
-    if (answer === this.current.answer) {
-        this.loadCard(this.currentIndex + 1);
-    }
+CardPlayer.prototype.finish = function() {
+    this.question.html(this.finishMessage);
+    this.answer.val('');
+    this.answer.off('keyup');
+    this.showHint.off('click');
 };
