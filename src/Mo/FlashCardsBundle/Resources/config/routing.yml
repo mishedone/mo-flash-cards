@@ -1,9 +1,9 @@
 # api routes
 _api_cards:
-    path:     /api/cards/{group}
+    path:     /api/cards/{deck}
     defaults: { _controller: MoFlashCardsBundle:Api:cards }
 
 # learn routes
 _learn_cards:
-    path:     /{_locale}/learn/cards/{group}
+    path:     /{_locale}/learn/cards/{deck}
     defaults: { _controller: MoFlashCardsBundle:Learn:cards }

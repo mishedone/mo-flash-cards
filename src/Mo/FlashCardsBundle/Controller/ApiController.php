@@ -11,10 +11,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class ApiController extends Controller
 {
     /**
-     * @param string $group
+     * @param string $deck
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function cardsAction($group)
+    public function cardsAction($deck)
     {
         $cards = array(
             'dog' => 'doggy',

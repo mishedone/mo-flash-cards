@@ -10,11 +10,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class LearnController extends Controller
 {
     /**
-     * @param string $group
+     * @param string $deck
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function cardsAction($group)
+    public function cardsAction($deck)
     {
-        return $this->render('MoFlashCardsBundle:Learn:cards.html.twig');
+        return $this->render('MoFlashCardsBundle:Learn:cards.html.twig', array('deck' => $deck));
     }
 }
