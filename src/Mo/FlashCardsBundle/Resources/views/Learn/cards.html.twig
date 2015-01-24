@@ -1,6 +1,6 @@
 {% extends 'MoFlashCardsBundle::layout.html.twig' %}
 
-{% block title %}{{ 'learnCards.meta.title'|trans({'%deck%': deck}) }}{% endblock %}
+{% block title %}{{ 'learnCards.meta.title'|trans({'%deck%': deck.name}) }}{% endblock %}
 
 {% block content %}
     <div class="container">
@@ -25,10 +25,16 @@
             var player = new CardPlayer({
                 finishMessage: '{{ 'learnCards.message.finish'|trans }}'
             });
-            player.addCard('cat', 'котка');
-            player.addCard('dog', 'куче');
-            player.addCard('rat', 'плъх');
-            player.start();
+            
+            // load deck cards from the api
+            $.getJSON('{{ path('_api_cards', {'deckSlug': deck.slug}) }}', function(cards) {
+                $.each(cards, function(key, val) {
+                    player.addCard(val.question, val.answer);
+                });
+                
+                // start the player
+                player.start();
+            });
         });
     </script>
 {% endblock %}
