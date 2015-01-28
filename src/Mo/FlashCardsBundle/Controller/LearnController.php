@@ -10,6 +10,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class LearnController extends Controller
 {
     /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function decksAction()
+    {
+        $decks = $this->get('doctrine_mongodb')
+            ->getRepository('MoFlashCardsBundle:Deck')
+            ->findAll();
+        
+        return $this->render('MoFlashCardsBundle:Learn:decks.html.twig', array('decks' => $decks));
+    }
+    
+    /**
      * @param string $deckSlug
      * @return \Symfony\Component\HttpFoundation\Response
      */

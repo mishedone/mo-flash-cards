@@ -1,4 +1,9 @@
 # organization help: http://obtao.com/blog/2013/06/how-to-organize-your-translations-in-symfony/
+learnDecks:
+    meta:
+        title: Choose a deck to learn
+    content:
+        heading: Choose your deck
 learnCards:
     action:
         hint: Hint
@@ -6,7 +11,7 @@ learnCards:
         title: %deck% - learn your cards
     message:
         loading: Loading cards...
-        finish: No more cards to learn in this deck.
+        finish: No more cards in this deck.
     form:
         placeholder:
             answer: Type in your answer here

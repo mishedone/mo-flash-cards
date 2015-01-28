@@ -1,4 +1,9 @@
 # organization help: http://obtao.com/blog/2013/06/how-to-organize-your-translations-in-symfony/
+learnDecks:
+    meta:
+        title: Изберете си тесте за учене
+    content:
+        heading: Изберете си тесте
 learnCards:
     action:
         hint: Подскажи
@@ -6,7 +11,7 @@ learnCards:
         title: %deck% - научете картите си
     message:
         loading: Зареждам картите...
-        finish: Не останаха карти за учене в това тесте.
+        finish: Не останаха карти в това тесте.
     form:
         placeholder:
             answer: Напишете отговора си тук
