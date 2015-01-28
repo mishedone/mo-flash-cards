@@ -1,19 +1,20 @@
 # organization help: http://obtao.com/blog/2013/06/how-to-organize-your-translations-in-symfony/
 learnDecks:
     meta:
-        title: Изберете си тесте за учене
+        title: Избери си тесте за учене
     content:
-        heading: Изберете си тесте
+        heading: Избери си тесте
 learnCards:
     action:
-        hint: Подскажи
+        hint: Подскажи ми
+        back: Избери си ново тесте
     meta:
-        title: %deck% - научете картите си
+        title: %deck% - научи картите си
     message:
         loading: Зареждам картите...
         finish: Не останаха карти в това тесте.
     form:
         placeholder:
-            answer: Напишете отговора си тук
+            answer: Напиши отговора си тук
         
         
