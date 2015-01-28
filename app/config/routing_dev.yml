@@ -18,5 +18,5 @@ _main:
     resource: routing.yml
 
 # MoFlashCardsBundle test routes
-_flash_card_tests:
+mo_flash_cards_tests:
     resource: "@MoFlashCardsBundle/Resources/config/routing_tests.yml"
