@@ -21,4 +21,6 @@ parameters:
 
     # MongoDB connection parameters
     mongo_server:      ~
-    mongo_database:    ~
+    mongo_db:          ~
+    mongo_test_server: ~
+    mongo_test_db:     ~

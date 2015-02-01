@@ -57,7 +57,7 @@ doctrine_mongodb:
         default:
             server: "%mongo_server%"
             options: {}
-    default_database: "%mongo_database%"
+    default_database: "%mongo_db%"
     document_managers:
         default:
             auto_mapping: true

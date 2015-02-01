@@ -11,6 +11,17 @@ framework:
 web_profiler:
     toolbar: false
     intercept_redirects: false
+    
+# MongoDB Configuration
+doctrine_mongodb:
+    connections:
+        default:
+            server: "%mongo_test_server%"
+            options: {}
+    default_database: "%mongo_test_db%"
+    document_managers:
+        default:
+            auto_mapping: true
 
 swiftmailer:
     disable_delivery: true
