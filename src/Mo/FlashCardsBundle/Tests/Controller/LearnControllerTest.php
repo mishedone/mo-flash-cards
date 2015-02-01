@@ -2,9 +2,9 @@
 
 namespace Mo\FlashCardsBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Mo\FlashCardsBundle\Test\DocumentWebTestCase;
 
-class LearnControllerTest extends WebTestCase
+class LearnControllerTest extends DocumentWebTestCase
 {
     public function testDecks()
     {
