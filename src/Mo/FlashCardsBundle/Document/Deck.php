@@ -3,6 +3,7 @@
 namespace Mo\FlashCardsBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @MongoDB\Document(collection="decks")
@@ -28,7 +29,7 @@ class Deck
     /** 
      * @MongoDB\EmbedMany(targetDocument="Card") 
      */
-    protected $cards = array();
+    protected $cards;
     
     /**
      * @return string
@@ -71,10 +72,26 @@ class Deck
     }
     
     /**
-     * @param \Mo\FlashCardsBundle\Document\Card $card
+     * @param Mo\FlashCardsBundle\Document\Card $card
      */
     public function addCard(Card $card)
     {
         $this->cards[] = $card;
+    }
+    
+    /**
+     * @param Mo\FlashCardsBundle\Document\Card $card
+     */
+    public function removeCard(Card $card)
+    {
+        $this->cards->removeElement($card);
+    }
+    
+    /**
+     * Initializes collections.
+     */
+    public function __construct()
+    {
+        $this->cards = new ArrayCollection();
     }
 }
