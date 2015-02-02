@@ -1,6 +1,6 @@
 <?php
 
-namespace Acme\HelloBundle\DataFixtures\MongoDB;
+namespace Acme\HelloBundle\Tests\DataFixtures\MongoDB;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
