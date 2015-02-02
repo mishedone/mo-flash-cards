@@ -23,7 +23,7 @@ abstract class DocumentWebTestCase extends WebTestCase
         $console->run(new ArrayInput(array(
             'command' => 'doctrine:mongodb:fixtures:load',
             '--env' => 'test',
-            '--fixtures' => __DIR__ . '/../DataFixtures',
+            '--fixtures' => __DIR__ . '/../Tests/DataFixtures',
             '--quiet' => null
         )));
     }
