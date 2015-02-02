@@ -15,14 +15,34 @@ class LoadDecks implements FixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        // create animals deck
-        $animalsDeck = $this->createDeck('Animals', 'animals');
-        $animalsDeck->addCard($this->createCard('cat', 'котка'));
-        $animalsDeck->addCard($this->createCard('dog', 'куче'));
+        $fixtureFiles = scandir($this->getFilesDir());
+        foreach ($fixtureFiles as $filename) {
+            if (preg_match('/.csv$/', $filename)) {
+                $deck = $this->createDeckFromFile($filename);
+                $manager->persist($deck);
+            }
+        }
         
-        // save decks
-        $manager->persist($animalsDeck);
+        // save generated decks
         $manager->flush();
+    }
+    
+    /**
+     * @param string $filename
+     * @return Mo\FlashCardsBundle\Document\Deck
+     */
+    protected function createDeckFromFile($filename)
+    {
+        $handle = fopen($this->getFilesDir() . '/' . $filename, 'r');
+        $deckData = fgetcsv($handle);
+        $deck = $this->createDeck($deckData[0], $deckData[1]);
+        while (false !== $cardData = fgetcsv($handle)) {
+            $card = $this->createCard($cardData[0], $cardData[1]);
+            $deck->addCard($card);
+        }
+        fclose($handle);
+        
+        return $deck;
     }
     
     /**
@@ -51,6 +71,14 @@ class LoadDecks implements FixtureInterface
         $card->setBack($back);
         
         return $card;
+    }
+    
+    /**
+     * @return string
+     */
+    protected function getFilesDir()
+    {
+        return __DIR__ . '/../CSV';
     }
 }
 
