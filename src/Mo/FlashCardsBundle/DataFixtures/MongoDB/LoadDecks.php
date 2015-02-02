@@ -1,6 +1,6 @@
 <?php
 
-namespace Mo\FlashCardsBundle\Tests\DataFixtures\MongoDB;
+namespace Mo\FlashCardsBundle\DataFixtures\MongoDB;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -19,13 +19,9 @@ class LoadDecks implements FixtureInterface
         $animalsDeck = $this->createDeck('Animals', 'animals');
         $animalsDeck->addCard($this->createCard('cat', 'котка'));
         $animalsDeck->addCard($this->createCard('dog', 'куче'));
-
-        // create cars deck
-        $carsDeck = $this->createDeck('Cars', 'cars');
         
         // save decks
         $manager->persist($animalsDeck);
-        $manager->persist($carsDeck);
         $manager->flush();
     }
     
