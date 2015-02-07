@@ -1,9 +1,12 @@
 mo_flash_cards:
     resource: "@MoFlashCardsBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix: /
     requirements:
         _locale: en|bg
 
 app:
     resource: @AppBundle/Controller/
-    type:     annotation
+    type: annotation
+    
+logout:
+    path: /logout
