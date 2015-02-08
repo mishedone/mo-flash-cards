@@ -6,9 +6,14 @@ use Mo\FlashCardsBundle\Test\DocumentWebTestCase;
 
 class LearnControllerTest extends DocumentWebTestCase
 {
+    protected $user = array(
+        'PHP_AUTH_USER' => 'kalitko',
+        'PHP_AUTH_PW' => 'e_ovchar4e'
+    );
+    
     public function testDecks()
     {
-        $client = static::createClient();
+        $client = static::createClient(array(), $this->user);
         $crawler = $client->request('GET', '/en/learn/decks');
         
         // check the deck link list
@@ -18,7 +23,7 @@ class LearnControllerTest extends DocumentWebTestCase
     
     public function testCards()
     {
-        $client = static::createClient();
+        $client = static::createClient(array(), $this->user);
         $crawler = $client->request('GET', '/en/learn/cards/animals');
         
         // check if all elements are there

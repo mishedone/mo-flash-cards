@@ -4,14 +4,13 @@ namespace AppBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class DefaultControllerTest extends WebTestCase
+class HomepageControllerTest extends WebTestCase
 {
     public function testIndex()
     {
         $client = static::createClient();
+        $client->request('GET', '/');
 
-        $crawler = $client->request('GET', '/');
-
-        $this->assertTrue($crawler->filter('html:contains("Homepage")')->count() > 0);
+        $this->assertTrue($client->getResponse()->isRedirect('/bg/learn/decks'));
     }
 }
