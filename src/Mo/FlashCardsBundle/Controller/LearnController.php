@@ -10,6 +10,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class LearnController extends Controller
 {
     /**
+     * Define card directions.
+     */
+    const FRONT_TO_BACK = 'front-to-back';
+    const BACK_TO_FRONT = 'back-to-front';
+    
+    /**
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function decksAction()
@@ -23,9 +29,10 @@ class LearnController extends Controller
     
     /**
      * @param string $deckSlug
+     * @param string $direction
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function cardsAction($deckSlug)
+    public function cardsAction($deckSlug, $direction)
     {
         $deck = $this->get('doctrine_mongodb')
             ->getRepository('MoFlashCardsBundle:Deck')
@@ -36,6 +43,12 @@ class LearnController extends Controller
             throw $this->createNotFoundException();
         }
         
-        return $this->render('MoFlashCardsBundle:Learn:cards.html.twig', array('deck' => $deck));
+        // choose proper direction
+        $forward = self::BACK_TO_FRONT == $direction ? false : true;
+        
+        return $this->render('MoFlashCardsBundle:Learn:cards.html.twig', array(
+            'deck' => $deck,
+            'forward' => $forward
+        ));
     }
 }

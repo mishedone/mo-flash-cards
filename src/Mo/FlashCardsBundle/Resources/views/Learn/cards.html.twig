@@ -29,7 +29,11 @@
             
             // add cards
             {% for card in deck.getCards %}
-                player.addCard('{{ card.front }}', '{{ card.back }}');
+                {% if forward %}
+                    player.addCard('{{ card.front }}', '{{ card.back }}');
+                {% else %}
+                    player.addCard('{{ card.back }}', '{{ card.front }}');
+                {% endif %}
             {% endfor %}
 
             // start the player

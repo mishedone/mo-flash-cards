@@ -12,7 +12,23 @@
                     {% for deck in decks %}
                         <tr>
                             <td>
-                                <a href="{{ path('mofc_learn_cards', {'deckSlug': deck.slug}) }}">{{ deck.name }}</a>
+                                {% set forward = path('mofc_learn_cards', {
+                                    'deckSlug': deck.slug, 
+                                    'direction': constant('Mo\\FlashCardsBundle\\Controller\\LearnController::FRONT_TO_BACK')
+                                }) %}
+                                
+                                {% set backward = path('mofc_learn_cards', {
+                                    'deckSlug': deck.slug, 
+                                    'direction': constant('Mo\\FlashCardsBundle\\Controller\\LearnController::BACK_TO_FRONT')
+                                }) %}
+                                
+                                <a href="{{ forward }}"class="btn btn-default btn-xs" aria-label="Front to back">
+                                    <span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>
+                                </a>
+                                <a href="{{ backward }}"class="btn btn-default btn-xs" aria-label="Back to front">
+                                    <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
+                                </a>
+                                {{ deck.name }}
                             </td>
                         </tr>
                     {% endfor %}

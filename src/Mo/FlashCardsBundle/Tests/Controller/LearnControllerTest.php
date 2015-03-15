@@ -17,8 +17,10 @@ class LearnControllerTest extends DocumentWebTestCase
         $crawler = $client->request('GET', '/en/learn/decks');
         
         // check the deck link list
-        $this->assertEquals(1, $crawler->filter('a[href="/en/learn/cards/animals"]:contains("Animals")')->count(), 'First link is there.');
-        $this->assertEquals(1, $crawler->filter('a[href="/en/learn/cards/cars"]:contains("Cars")')->count(), 'Second link is there.');
+        $this->assertEquals(1, $crawler->filter('a[href="/en/learn/cards/animals/front-to-back"]')->count(), 'First forward link is there.');
+        $this->assertEquals(1, $crawler->filter('a[href="/en/learn/cards/cars/front-to-back"]')->count(), 'Second forward link is there.');
+        $this->assertEquals(1, $crawler->filter('a[href="/en/learn/cards/animals/back-to-front"]')->count(), 'First backward link is there.');
+        $this->assertEquals(1, $crawler->filter('a[href="/en/learn/cards/cars/back-to-front"]')->count(), 'Second backward link is there.');
     }
     
     public function testCards()
