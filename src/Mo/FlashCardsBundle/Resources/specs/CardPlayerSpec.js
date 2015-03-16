@@ -4,7 +4,7 @@ $(document).ready(function() {
         '<span id="card-player-question"></span>' +
         '<span id="card-player-hint"></span>' +
         '<input type="text" id="card-player-answer">' +
-        '<button id="card-player-show-hint"></button>' + 
+        '<button id="card-player-show-hint"></button>' +
         '</div>');
     
     // define specs
@@ -183,7 +183,7 @@ $(document).ready(function() {
  * @returns {CardPlayer}
  */
 function createCardPlayer(type) {
-    var player = new CardPlayer();
+    var player = new CardPlayer(jQuery);
     $('#card-player-question').html('');
     $('#card-player-answer').val('');
     
