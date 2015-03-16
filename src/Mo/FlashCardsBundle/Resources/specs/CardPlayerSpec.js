@@ -114,17 +114,11 @@ $(document).ready(function() {
         });
         
         describe('can show a hint for the current card', function() {
-            beforeAll(function() {
+            it('by showing the correct answer', function() {
                 player = createCardPlayer('full');
                 player.loadNextCard();
-                spyOn(player, 'loadNextCard');
                 player.showCurrentCardHint();
-            });
-            it('by showing the correct answer', function() {
                 expect(player.hint.html()).toEqual('котка');
-            });
-            it('by loading the next card (but without clearing it)', function() {
-                expect(player.loadNextCard).toHaveBeenCalledWith(false);
             });
         });
         

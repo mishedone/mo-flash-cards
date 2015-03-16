@@ -99,7 +99,7 @@ CardPlayer.prototype.answerCurrentCard = function () {
 CardPlayer.prototype.showCurrentCardHint = function () {
     "use strict";
     this.hint.html(this.getCorrectAnswer());
-    this.loadNextCard(false);
+    //this.loadNextCard(false);
 };
 
 /**

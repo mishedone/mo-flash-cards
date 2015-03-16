@@ -7,10 +7,13 @@
  * The main learning weapon - this player should play the cards to the user so
  * he can learn them.
  * 
+ * @param {Object} $       A jQuery instance.
  * @param {Object} options Initialize the player.
  */
-function CardPlayer(options) {
-    var self = this;
+function CardPlayer($, options) {
+    "use strict";
+    var self, key;
+    self = this;
     
     // define default options
     self.questionId = 'card-player-question';
@@ -22,8 +25,8 @@ function CardPlayer(options) {
     self.finishMessage = 'No more cards to learn.';
     
     // update the options based on the passed JSON
-    for (var key in options) {
-        if (self.hasOwnProperty(key)) {
+    for (key in options) {
+        if (options.hasOwnProperty(key) && self.hasOwnProperty(key)) {
             self[key] = options[key];
         }
     }
@@ -37,7 +40,7 @@ function CardPlayer(options) {
     self.answer = $('#' + self.answerId);
     self.hint = $('#' + self.hintId);
     self.showHint = $('#' + self.showHintId);
-};
+}
 
 /**
  * Adds a card to the player.
@@ -45,7 +48,8 @@ function CardPlayer(options) {
  * @param {string} question
  * @param {string} answer
  */
-CardPlayer.prototype.addCard = function(question, answer) {
+CardPlayer.prototype.addCard = function (question, answer) {
+    "use strict";
     this.cards.push({question: question, answer: answer});
 };
 
@@ -54,7 +58,8 @@ CardPlayer.prototype.addCard = function(question, answer) {
  * 
  * @returns {string}
  */
-CardPlayer.prototype.getCorrectAnswer = function() {
+CardPlayer.prototype.getCorrectAnswer = function () {
+    "use strict";
     return this.cards[this.currentIndex].answer;
 };
 
@@ -63,7 +68,8 @@ CardPlayer.prototype.getCorrectAnswer = function() {
  * 
  * @param {boolean} clearHint Default: true.
  */
-CardPlayer.prototype.loadNextCard = function(clearHint) {
+CardPlayer.prototype.loadNextCard = function (clearHint) {
+    "use strict";
     var nextIndex = this.currentIndex === null ? 0 : this.currentIndex + 1;
     
     // clear hint if asked
@@ -85,7 +91,8 @@ CardPlayer.prototype.loadNextCard = function(clearHint) {
 /**
  * Checks if the typed in answer is the same as the current question's answer.
  */
-CardPlayer.prototype.answerCurrentCard = function() {
+CardPlayer.prototype.answerCurrentCard = function () {
+    "use strict";
     if (this.answer.val().toLowerCase() === this.getCorrectAnswer().toLowerCase()) {
         this.loadNextCard();
     }
@@ -94,23 +101,25 @@ CardPlayer.prototype.answerCurrentCard = function() {
 /**
  * Shows a hint for the currently loaded card and loads the next one.
  */
-CardPlayer.prototype.showCurrentCardHint = function() {
+CardPlayer.prototype.showCurrentCardHint = function () {
+    "use strict";
     this.hint.html(this.getCorrectAnswer());
-    this.loadNextCard(false);
+    //this.loadNextCard(false);
 };
 
 /**
  * Starts the player by loading the first card and watching for player typing.
  */
-CardPlayer.prototype.start = function() {
+CardPlayer.prototype.start = function () {
+    "use strict";
     var player = this;
     
     // run it!
     this.loadNextCard();
-    this.answer.keyup(function() {
+    this.answer.keyup(function () {
         player.answerCurrentCard();
     });
-    this.showHint.click(function() {
+    this.showHint.click(function () {
         player.showCurrentCardHint();
     });
 };
@@ -118,7 +127,8 @@ CardPlayer.prototype.start = function() {
 /**
  * Finishes the playing of cards.
  */
-CardPlayer.prototype.finish = function() {
+CardPlayer.prototype.finish = function () {
+    "use strict";
     this.question.html(this.finishMessage);
     this.answer.val('');
     this.answer.off('keyup');
