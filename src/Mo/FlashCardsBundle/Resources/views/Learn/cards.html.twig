@@ -23,9 +23,9 @@
         
     <script>
         $(document).ready(function() {
-            var player = new CardPlayer({
+            var player = new CardPlayer(jQuery, {
                 finishMessage: '{{ 'learnCards.message.finish'|trans }}'
-            }, jQuery);
+            });
             
             // add cards
             {% for card in deck.getCards %}
