@@ -73,15 +73,10 @@ $(document).ready(function () {
                 player.loadNextCard();
                 expect(player.answer.val()).toEqual('');
             });
-            it('by clearing the hint by default', function () {
+            it('by clearing the hint', function () {
                 player.hint.html('some good old hint');
                 player.loadNextCard();
                 expect(player.hint.html()).toEqual('');
-            });
-            it('by not clearing the hint if asked', function () {
-                player.hint.html('some good old hint');
-                player.loadNextCard(false);
-                expect(player.hint.html()).toEqual('some good old hint');
             });
             it('by finishing the player if there are no more left', function () {
                 spyOn(player, 'finish');

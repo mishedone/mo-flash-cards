@@ -60,18 +60,13 @@ CardPlayer.prototype.getCorrectAnswer = function () {
 
 /**
  * Loads the next card into the player.
- * 
- * @param {boolean} clearHint Default: true.
  */
-CardPlayer.prototype.loadNextCard = function (clearHint) {
+CardPlayer.prototype.loadNextCard = function () {
     "use strict";
     var nextIndex = this.currentIndex === null ? 0 : this.currentIndex + 1;
     
-    // clear hint if asked
-    clearHint = typeof clearHint !== 'undefined' ? clearHint : true;
-    if (clearHint) {
-        this.hint.html('');
-    }
+    // always clear hint
+    this.hint.html('');
     
     // update properties
     if (typeof this.cards[nextIndex] !== 'undefined') {
@@ -99,7 +94,6 @@ CardPlayer.prototype.answerCurrentCard = function () {
 CardPlayer.prototype.showCurrentCardHint = function () {
     "use strict";
     this.hint.html(this.getCorrectAnswer());
-    //this.loadNextCard(false);
 };
 
 /**
