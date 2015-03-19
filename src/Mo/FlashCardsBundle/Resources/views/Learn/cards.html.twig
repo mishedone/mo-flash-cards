@@ -9,7 +9,8 @@
             <input id="card-player-answer" type="text" class="form-control" placeholder="{{ 'learnCards.form.placeholder.answer'|trans }}">
             <button id="card-player-show-hint" class="btn btn-default btn-primary">{{ 'learnCards.action.hint'|trans }}</button>
             <div id="card-player-hint"></div>
-            <a href="{{ path('mofc_learn_decks') }}" class="btn btn-default">{{ 'learnCards.action.back'|trans }}</a>
+            <a href="{{ path('mofc_learn_decks') }}" class="btn btn-default">{{ 'learnCards.action.back'|trans }}</a><br>
+            <dl id="card-player-history" class="dl-horizontal"></dl>
         </div>
     </div>
 {% endblock %}

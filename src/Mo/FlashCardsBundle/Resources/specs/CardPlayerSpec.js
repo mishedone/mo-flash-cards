@@ -11,6 +11,7 @@
             '<span id="card-player-hint"></span>' +
             '<input type="text" id="card-player-answer">' +
             '<button id="card-player-show-hint"></button>' +
+            '<div id="card-player-history"></div>' +
             '</div>');
 
         // define specs
@@ -36,8 +37,14 @@
                 it('knows where hints are shown', function () {
                     expect(player.hint).toEqual($('#card-player-hint'));
                 });
+                it('knows where card history is shown', function () {
+                    expect(player.history).toEqual($('#card-player-history'));
+                });
                 it('knows when hints are shown', function () {
                     expect(player.showHint).toEqual($('#card-player-show-hint'));
+                });
+                it('knows how card history is filled in', function () {
+                    expect(player.historyTemplate).toEqual('{{question}}:{{answer}}<br>');
                 });
             });
 
@@ -96,21 +103,27 @@
                 });
             });
 
-            describe('can answer the current card', function () {
+            describe('can answer the current card (no matter in what letter case)', function () {
                 beforeEach(function () {
                     player = createCardPlayer('full');
                     player.loadNextCard();
-                });
-                it('by loading the next card if correct (even if case does not match)', function () {
+                    spyOn(player, 'addCurrentCardToHistory');
                     spyOn(player, 'loadNextCard');
+                });
+                it('by adding the current card to history if correct', function () {
+                    player.answer.val('коТКа');
+                    player.answerCurrentCard();
+                    expect(player.addCurrentCardToHistory).toHaveBeenCalled();
+                });
+                it('by loading the next card if correct', function () {
                     player.answer.val('коТКа');
                     player.answerCurrentCard();
                     expect(player.loadNextCard).toHaveBeenCalled();
                 });
                 it('by doing nothing if incorrect', function () {
-                    spyOn(player, 'loadNextCard');
                     player.answer.val('котк');
                     player.answerCurrentCard();
+                    expect(player.addCurrentCardToHistory).not.toHaveBeenCalled();
                     expect(player.loadNextCard).not.toHaveBeenCalled();
                 });
             });
@@ -121,6 +134,22 @@
                     player.loadNextCard();
                     player.showCurrentCardHint();
                     expect(player.hint.html()).toEqual('котка');
+                });
+            });
+
+            describe('can add the current card to history', function () {
+                beforeAll(function () {
+                    player = createCardPlayer('full');
+                });
+                beforeEach(function () {
+                    player.loadNextCard();
+                    player.addCurrentCardToHistory();
+                });
+                it('by adding a template to history', function () {
+                    expect(player.history.html()).toEqual('cat:котка<br>');
+                });
+                it('by prepending consecutive templates to history', function () {
+                    expect(player.history.html()).toEqual('dog:куче<br>cat:котка<br>');
                 });
             });
 
@@ -179,7 +208,9 @@
      * @returns {CardPlayer}
      */
     function createCardPlayer(type) {
-        var player = new CardPlayer($);
+        var player = new CardPlayer($, {
+            'historyTemplate': '{{question}}:{{answer}}<br>'
+        });
         $('#card-player-question').html('');
         $('#card-player-answer').val('');
 
