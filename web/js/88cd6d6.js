@@ -20,6 +20,8 @@ function CardPlayer($, options) {
     self.answerId = 'card-player-answer';
     self.hintId = 'card-player-hint';
     self.showHintId = 'card-player-show-hint';
+    self.historyId = 'card-player-history';
+    self.historyTemplate = '<dt>{{question}}</dt><dd>{{answer}}</dd>';
     
     // define messages
     self.finishMessage = 'No more cards to learn.';
@@ -40,6 +42,7 @@ function CardPlayer($, options) {
     self.answer = $('#' + self.answerId);
     self.hint = $('#' + self.hintId);
     self.showHint = $('#' + self.showHintId);
+    self.history = $('#' + self.historyId);
 }
 
 /**
@@ -65,20 +68,15 @@ CardPlayer.prototype.getCorrectAnswer = function () {
 
 /**
  * Loads the next card into the player.
- * 
- * @param {boolean} clearHint Default: true.
  */
-CardPlayer.prototype.loadNextCard = function (clearHint) {
+CardPlayer.prototype.loadNextCard = function () {
     "use strict";
     var nextIndex = this.currentIndex === null ? 0 : this.currentIndex + 1;
     
-    // clear hint if asked
-    clearHint = typeof clearHint !== 'undefined' ? clearHint : true;
-    if (clearHint) {
-        this.hint.html('');
-    }
+    // clear hint
+    this.hint.html('');
     
-    // update properties
+    // update conditional properties
     if (typeof this.cards[nextIndex] !== 'undefined') {
         this.currentIndex = nextIndex;
         this.answer.val('');
@@ -94,6 +92,7 @@ CardPlayer.prototype.loadNextCard = function (clearHint) {
 CardPlayer.prototype.answerCurrentCard = function () {
     "use strict";
     if (this.answer.val().toLowerCase() === this.getCorrectAnswer().toLowerCase()) {
+        this.addCurrentCardToHistory();
         this.loadNextCard();
     }
 };
@@ -104,7 +103,21 @@ CardPlayer.prototype.answerCurrentCard = function () {
 CardPlayer.prototype.showCurrentCardHint = function () {
     "use strict";
     this.hint.html(this.getCorrectAnswer());
-    //this.loadNextCard(false);
+};
+
+/**
+ * Fills in the history template with current card data and adds it to the history.
+ */
+CardPlayer.prototype.addCurrentCardToHistory = function () {
+    "use strict";
+    var historyElement = this.historyTemplate.replace(
+        '{{question}}',
+        this.cards[this.currentIndex].question
+    ).replace(
+        '{{answer}}',
+        this.getCorrectAnswer()
+    );
+    this.history.prepend(historyElement);
 };
 
 /**
