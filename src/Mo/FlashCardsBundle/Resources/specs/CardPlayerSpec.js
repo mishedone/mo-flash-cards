@@ -58,14 +58,20 @@
                     expect(player.cards[0].answer).toEqual('прилеп');
                 });
             });
-
-            describe('can fetch the correct answer for the current card', function () {
-                beforeAll(function () {
+            
+            describe('can fetch the question of the current card', function () {
+                it('by checking it', function () {
                     player = createCardPlayer('full');
                     player.loadNextCard();
+                    expect(player.getCurrentQuestion()).toEqual('cat');
                 });
-                it('by checking the current card answer', function () {
-                    expect(player.getCorrectAnswer()).toEqual('котка');
+            });
+
+            describe('can fetch the answer of the current card', function () {
+                it('by checking it', function () {
+                    player = createCardPlayer('full');
+                    player.loadNextCard();
+                    expect(player.getCurrentAnswer()).toEqual('котка');
                 });
             });
 
@@ -129,7 +135,7 @@
             });
 
             describe('can show a hint for the current card', function () {
-                it('by showing the correct answer', function () {
+                it('by showing it\'s answer', function () {
                     player = createCardPlayer('full');
                     player.loadNextCard();
                     player.showCurrentCardHint();

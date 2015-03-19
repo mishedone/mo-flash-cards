@@ -57,11 +57,21 @@ CardPlayer.prototype.addCard = function (question, answer) {
 };
 
 /**
- * Returns the correct answer for the currently loaded card.
+ * Returns the question of the currently loaded card.
  * 
  * @returns {string}
  */
-CardPlayer.prototype.getCorrectAnswer = function () {
+CardPlayer.prototype.getCurrentQuestion = function () {
+    "use strict";
+    return this.cards[this.currentIndex].question;
+};
+
+/**
+ * Returns the answer for the currently loaded card.
+ * 
+ * @returns {string}
+ */
+CardPlayer.prototype.getCurrentAnswer = function () {
     "use strict";
     return this.cards[this.currentIndex].answer;
 };
@@ -80,29 +90,29 @@ CardPlayer.prototype.loadNextCard = function () {
     if (typeof this.cards[nextIndex] !== 'undefined') {
         this.currentIndex = nextIndex;
         this.answer.val('');
-        this.question.html(this.cards[nextIndex].question);
+        this.question.html(this.getCurrentQuestion());
     } else {
         this.finish();
     }
 };
 
 /**
- * Checks if the typed in answer is the same as the current question's answer.
+ * Checks if the typed in answer is the same as the current one.
  */
 CardPlayer.prototype.answerCurrentCard = function () {
     "use strict";
-    if (this.answer.val().toLowerCase() === this.getCorrectAnswer().toLowerCase()) {
+    if (this.answer.val().toLowerCase() === this.getCurrentAnswer().toLowerCase()) {
         this.addCurrentCardToHistory();
         this.loadNextCard();
     }
 };
 
 /**
- * Shows a hint for the currently loaded card and loads the next one.
+ * Shows a hint for the currently loaded card.
  */
 CardPlayer.prototype.showCurrentCardHint = function () {
     "use strict";
-    this.hint.html(this.getCorrectAnswer());
+    this.hint.html(this.getCurrentAnswer());
 };
 
 /**
@@ -112,10 +122,10 @@ CardPlayer.prototype.addCurrentCardToHistory = function () {
     "use strict";
     var historyElement = this.historyTemplate.replace(
         '{{question}}',
-        this.cards[this.currentIndex].question
+        this.getCurrentQuestion()
     ).replace(
         '{{answer}}',
-        this.getCorrectAnswer()
+        this.getCurrentAnswer()
     );
     this.history.prepend(historyElement);
 };
