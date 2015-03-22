@@ -12,6 +12,14 @@ use Symfony\Component\Console\Input\ArrayInput;
 abstract class DocumentWebTestCase extends WebTestCase
 {
     /**
+     * User authentication credentials.
+     */
+    protected $user = array(
+        'PHP_AUTH_USER' => 'kalitko',
+        'PHP_AUTH_PW' => 'e_ovchar4e'
+    );
+    
+    /**
      * Resets the state of the database.
      */
     protected static function resetDatabase()

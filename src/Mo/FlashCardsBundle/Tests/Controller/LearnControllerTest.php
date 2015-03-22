@@ -6,11 +6,6 @@ use Mo\FlashCardsBundle\Test\DocumentWebTestCase;
 
 class LearnControllerTest extends DocumentWebTestCase
 {
-    protected $user = array(
-        'PHP_AUTH_USER' => 'kalitko',
-        'PHP_AUTH_PW' => 'e_ovchar4e'
-    );
-    
     public function testDecks()
     {
         $client = static::createClient(array(), $this->user);
