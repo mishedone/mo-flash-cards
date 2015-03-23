@@ -7,6 +7,7 @@
     $(document).ready(function () {
         // load fixtures
         $(document.body).append('<div class="card-player-fixture" style="display: none;">' +
+            '<button id="card-player-play-question"></button>' +
             '<span id="card-player-question"></span>' +
             '<span id="card-player-hint"></span>' +
             '<input type="text" id="card-player-answer">' +
@@ -43,19 +44,26 @@
                 it('knows when hints are shown', function () {
                     expect(player.showHint).toEqual($('#card-player-show-hint'));
                 });
+                it('knows when questions are played as audio', function () {
+                    expect(player.playQuestion).toEqual($('#card-player-play-question'));
+                });
                 it('knows how card history is filled in', function () {
                     expect(player.historyTemplate).toEqual('{{question}}:{{answer}}<br>');
+                });
+                it('knows how to play audio', function () {
+                    expect(player.audio.tagName.toLowerCase()).toEqual('audio');
                 });
             });
 
             describe('can add a card', function () {
-                beforeAll(function () {
+                beforeEach(function () {
                     player = createCardPlayer('empty');
                 });
-                it('based on question and answer', function () {
-                    player.addCard('bat', 'прилеп');
+                it('based on question, answer and audio', function () {
+                    player.addCard('bat', 'прилеп', '/resource/text-to-speech/bat');
                     expect(player.cards[0].question).toEqual('bat');
                     expect(player.cards[0].answer).toEqual('прилеп');
+                    expect(player.cards[0].audio).toEqual('/resource/text-to-speech/bat');
                 });
             });
             
@@ -72,6 +80,14 @@
                     player = createCardPlayer('full');
                     player.loadNextCard();
                     expect(player.getCurrentAnswer()).toEqual('котка');
+                });
+            });
+            
+            describe('can fetch the audio of the current card', function () {
+                it('by checking it', function () {
+                    player = createCardPlayer('full');
+                    player.loadNextCard();
+                    expect(player.getCurrentAudio()).toEqual('/resource/text-to-speech/cat');
                 });
             });
 
@@ -142,6 +158,19 @@
                     expect(player.hint.html()).toEqual('котка');
                 });
             });
+            
+            describe('can pronounce the current card question', function () {
+                beforeAll(function () {
+                    player = createCardPlayer('full');
+                    spyOn(player.audio, 'play');
+                });
+                it('by loading it\'s audio', function () {
+                    player.loadNextCard();
+                    player.playCurrentCardAudio();
+                    expect(player.audio.src).toContain('/resource/text-to-speech/cat');
+                    expect(player.audio.play).toHaveBeenCalled();
+                });
+            });
 
             describe('can add the current card to history', function () {
                 beforeAll(function () {
@@ -165,6 +194,7 @@
                     spyOn(player, 'loadNextCard');
                     spyOn(player, 'answerCurrentCard');
                     spyOn(player, 'showCurrentCardHint');
+                    spyOn(player, 'playCurrentCardAudio');
                     player.start();
                 });
                 it('by loading the first card', function () {
@@ -177,6 +207,10 @@
                 it('by watching for clicks on the show hint button', function () {
                     player.showHint.click();
                     expect(player.showCurrentCardHint).toHaveBeenCalled();
+                });
+                it('by watching for clicks on the play question button', function () {
+                    player.playQuestion.click();
+                    expect(player.playCurrentCardAudio).toHaveBeenCalled();
                 });
             });
 
@@ -223,10 +257,10 @@
         // add cards for each available type
         switch (type) {
         case 'full':
-            player.addCard('cat', 'котка');
-            player.addCard('dog', 'куче');
-            player.addCard('rat', 'плъх');
-            player.addCard('котка', 'cat');
+            player.addCard('cat', 'котка', '/resource/text-to-speech/cat');
+            player.addCard('dog', 'куче', '/resource/text-to-speech/dog');
+            player.addCard('rat', 'плъх', '/resource/text-to-speech/rat');
+            player.addCard('котка', 'cat', '/resource/text-to-speech/nothing');
             break;
         }
 

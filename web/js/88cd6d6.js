@@ -20,6 +20,7 @@ function CardPlayer($, options) {
     self.answerId = 'card-player-answer';
     self.hintId = 'card-player-hint';
     self.showHintId = 'card-player-show-hint';
+    self.playQuestionId = 'card-player-play-question';
     self.historyId = 'card-player-history';
     self.historyTemplate = '<dt>{{question}}</dt><dd>{{answer}}</dd>';
     
@@ -36,12 +37,14 @@ function CardPlayer($, options) {
     // define properties
     self.cards = [];
     self.currentIndex = null;
+    self.audio = document.createElement('audio');
     
     // select controls
     self.question = $('#' + self.questionId);
     self.answer = $('#' + self.answerId);
     self.hint = $('#' + self.hintId);
     self.showHint = $('#' + self.showHintId);
+    self.playQuestion = $('#' + self.playQuestionId);
     self.history = $('#' + self.historyId);
 }
 
@@ -50,10 +53,15 @@ function CardPlayer($, options) {
  * 
  * @param {string} question
  * @param {string} answer
+ * @param {string} audio
  */
-CardPlayer.prototype.addCard = function (question, answer) {
+CardPlayer.prototype.addCard = function (question, answer, audio) {
     "use strict";
-    this.cards.push({question: question, answer: answer});
+    this.cards.push({
+        question: question,
+        answer: answer,
+        audio: audio
+    });
 };
 
 /**
@@ -74,6 +82,16 @@ CardPlayer.prototype.getCurrentQuestion = function () {
 CardPlayer.prototype.getCurrentAnswer = function () {
     "use strict";
     return this.cards[this.currentIndex].answer;
+};
+
+/**
+ * Returns the audio for the currently loaded card.
+ * 
+ * @returns {string}
+ */
+CardPlayer.prototype.getCurrentAudio = function () {
+    "use strict";
+    return this.cards[this.currentIndex].audio;
 };
 
 /**
@@ -116,6 +134,15 @@ CardPlayer.prototype.showCurrentCardHint = function () {
 };
 
 /**
+ * Plays the current card audio.
+ */
+CardPlayer.prototype.playCurrentCardAudio = function () {
+    "use strict";
+    this.audio.src = this.getCurrentAudio();
+    this.audio.play();
+};
+
+/**
  * Fills in the history template with current card data and adds it to the history.
  */
 CardPlayer.prototype.addCurrentCardToHistory = function () {
@@ -144,6 +171,9 @@ CardPlayer.prototype.start = function () {
     });
     this.showHint.click(function () {
         player.showCurrentCardHint();
+    });
+    this.playQuestion.click(function () {
+        player.playCurrentCardAudio();
     });
 };
 
