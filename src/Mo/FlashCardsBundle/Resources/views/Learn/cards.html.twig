@@ -6,9 +6,6 @@
     <div class="container">
         <div class="row">
             <div id="card-player-question" style="float: left;">{{ 'learnCards.message.loading'|trans }}</div>
-            <button id="card-player-play-question" class="btn btn-default btn-xs">
-                <span class="glyphicon glyphicon glyphicon-volume-up" aria-hidden="true"></span>
-            </button>
             <input id="card-player-answer" type="text" class="form-control" placeholder="{{ 'learnCards.form.placeholder.answer'|trans }}">
             <button id="card-player-show-hint" class="btn btn-default btn-primary">{{ 'learnCards.action.hint'|trans }}</button>
             <div id="card-player-hint"></div>
@@ -21,23 +18,34 @@
 {% block javascripts %}
     {% javascripts 
         '@jquery_js'
+        '@MoFlashCardsBundle/Resources/public/js/CardSide.js'
+        '@MoFlashCardsBundle/Resources/public/js/Card.js'
         '@MoFlashCardsBundle/Resources/public/js/CardPlayer.js' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
         
     <script>
         $(document).ready(function() {
-            var player = new CardPlayer(jQuery, {
+            var player, front, back, sideOptions;
+            player = new CardPlayer(jQuery, {
                 finishMessage: '{{ 'learnCards.message.finish'|trans }}',
-                historyTemplate: '<dt style="width: 300px;">{{ '{{' }}question{{ '}}' }}</dt><dd style="margin-left: 310px;">{{ '{{' }}answer{{ '}}' }}</dd>'
+                historyTemplate: '<dt style="width: 300px;">[[question]]</dt><dd style="margin-left: 310px;">[[answer]]</dd>'
             });
+            sideOptions = {
+                outputTemplate: '[[text]]<button audio-url="[[audio]]" style="margin-left: 5px;" class="card-player-audio btn btn-default btn-xs">' +
+                '<span class="glyphicon glyphicon glyphicon-volume-up" aria-hidden="true"></span>' +
+                '</button>'
+            };
             
             // add cards
             {% for card in deck.getCards %}
+                front = new CardSide('{{ card.front }}', '{{ path('mofc_resource_text_to_speech', {'text': card.front}) }}', sideOptions);
+                back = new CardSide('{{ card.back }}', '{{ path('mofc_resource_text_to_speech', {'text': card.back}) }}', sideOptions);
+                                     
                 {% if forward %}
-                    player.addCard('{{ card.front }}', '{{ card.back }}', '{{ path('mofc_resource_text_to_speech', {'text': card.front}) }}');
+                    player.addCard(new Card(front, back));
                 {% else %}
-                    player.addCard('{{ card.back }}', '{{ card.front }}', '{{ path('mofc_resource_text_to_speech', {'text': card.back}) }}');
+                    player.addCard(new Card(back, front));
                 {% endif %}
             {% endfor %}
 

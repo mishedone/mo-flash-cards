@@ -15,9 +15,10 @@ function CardPlayer($, options) {
     self.answerId = 'card-player-answer';
     self.hintId = 'card-player-hint';
     self.showHintId = 'card-player-show-hint';
-    self.playQuestionId = 'card-player-play-question';
     self.historyId = 'card-player-history';
-    self.historyTemplate = '<dt>{{question}}</dt><dd>{{answer}}</dd>';
+    self.historyTemplate = '<dt>[[question]]</dt><dd>[[answer]]</dd>';
+    self.audioClass = 'card-player-audio';
+    self.audioAttribute = 'audio-url';
     
     // define messages
     self.finishMessage = 'No more cards to learn.';
@@ -32,31 +33,26 @@ function CardPlayer($, options) {
     // define properties
     self.cards = [];
     self.currentIndex = null;
-    self.audio = document.createElement('audio');
+    self.audioPlayer = document.createElement('audio');
     
     // select controls
+    self.$ = $;
+    self.container = $('body');
     self.question = $('#' + self.questionId);
     self.answer = $('#' + self.answerId);
     self.hint = $('#' + self.hintId);
     self.showHint = $('#' + self.showHintId);
-    self.playQuestion = $('#' + self.playQuestionId);
     self.history = $('#' + self.historyId);
 }
 
 /**
  * Adds a card to the player.
  * 
- * @param {string} question
- * @param {string} answer
- * @param {string} audio
+ * @param {Card} card
  */
-CardPlayer.prototype.addCard = function (question, answer, audio) {
+CardPlayer.prototype.addCard = function (card) {
     "use strict";
-    this.cards.push({
-        question: question,
-        answer: answer,
-        audio: audio
-    });
+    this.cards.push(card);
 };
 
 /**
@@ -64,29 +60,9 @@ CardPlayer.prototype.addCard = function (question, answer, audio) {
  * 
  * @returns {string}
  */
-CardPlayer.prototype.getCurrentQuestion = function () {
+CardPlayer.prototype.getCurrentCard = function () {
     "use strict";
-    return this.cards[this.currentIndex].question;
-};
-
-/**
- * Returns the answer for the currently loaded card.
- * 
- * @returns {string}
- */
-CardPlayer.prototype.getCurrentAnswer = function () {
-    "use strict";
-    return this.cards[this.currentIndex].answer;
-};
-
-/**
- * Returns the audio for the currently loaded card.
- * 
- * @returns {string}
- */
-CardPlayer.prototype.getCurrentAudio = function () {
-    "use strict";
-    return this.cards[this.currentIndex].audio;
+    return this.cards[this.currentIndex];
 };
 
 /**
@@ -103,7 +79,7 @@ CardPlayer.prototype.loadNextCard = function () {
     if (typeof this.cards[nextIndex] !== 'undefined') {
         this.currentIndex = nextIndex;
         this.answer.val('');
-        this.question.html(this.getCurrentQuestion());
+        this.question.html(this.getCurrentCard().question.output);
     } else {
         this.finish();
     }
@@ -114,7 +90,7 @@ CardPlayer.prototype.loadNextCard = function () {
  */
 CardPlayer.prototype.answerCurrentCard = function () {
     "use strict";
-    if (this.answer.val().toLowerCase() === this.getCurrentAnswer().toLowerCase()) {
+    if (this.answer.val().toLowerCase() === this.getCurrentCard().answer.text.toLowerCase()) {
         this.addCurrentCardToHistory();
         this.loadNextCard();
     }
@@ -125,16 +101,7 @@ CardPlayer.prototype.answerCurrentCard = function () {
  */
 CardPlayer.prototype.showCurrentCardHint = function () {
     "use strict";
-    this.hint.html(this.getCurrentAnswer());
-};
-
-/**
- * Plays the current card audio.
- */
-CardPlayer.prototype.playCurrentCardAudio = function () {
-    "use strict";
-    this.audio.src = this.getCurrentAudio();
-    this.audio.play();
+    this.hint.html(this.getCurrentCard().answer.output);
 };
 
 /**
@@ -143,13 +110,29 @@ CardPlayer.prototype.playCurrentCardAudio = function () {
 CardPlayer.prototype.addCurrentCardToHistory = function () {
     "use strict";
     var historyElement = this.historyTemplate.replace(
-        '{{question}}',
-        this.getCurrentQuestion()
+        '[[question]]',
+        this.getCurrentCard().question.output
     ).replace(
-        '{{answer}}',
-        this.getCurrentAnswer()
+        '[[answer]]',
+        this.getCurrentCard().answer.output
     );
     this.history.prepend(historyElement);
+};
+
+/**
+ * Plays audio based on a jQuery selected html element.
+ *
+ * @param {Object} audio The html element.
+ */
+CardPlayer.prototype.playAudio = function (audio) {
+    "use strict";
+    var audioAttribute = audio.attr(this.audioAttribute);
+    if (audio.hasClass(this.audioClass)) {
+        if (audioAttribute) {
+            this.audioPlayer.src = audioAttribute;
+            this.audioPlayer.play();
+        }
+    }
 };
 
 /**
@@ -167,8 +150,8 @@ CardPlayer.prototype.start = function () {
     this.showHint.click(function () {
         player.showCurrentCardHint();
     });
-    this.playQuestion.click(function () {
-        player.playCurrentCardAudio();
+    this.container.click(function (event) {
+        player.playAudio(player.$(event.target));
     });
 };
 
@@ -181,4 +164,5 @@ CardPlayer.prototype.finish = function () {
     this.answer.val('');
     this.answer.off('keyup');
     this.showHint.off('click');
+    this.container.off('click');
 };

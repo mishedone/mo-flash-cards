@@ -1,13 +1,11 @@
-/*global $, CardPlayer, createCardPlayer */
-/*global describe, it, expect, spyOn */
-/*global beforeAll, beforeEach */
+/*global $, CardPlayer, Card, CardSide, createCardPlayer */
+/*global describe, it, expect, spyOn, beforeAll, beforeEach */
 
 (function () {
     "use strict";
     $(document).ready(function () {
         // load fixtures
         $(document.body).append('<div class="card-player-fixture" style="display: none;">' +
-            '<button id="card-player-play-question"></button>' +
             '<span id="card-player-question"></span>' +
             '<span id="card-player-hint"></span>' +
             '<input type="text" id="card-player-answer">' +
@@ -22,6 +20,9 @@
             describe('when created', function () {
                 beforeAll(function () {
                     player = createCardPlayer('empty');
+                });
+                it('knows how to select elements', function () {
+                    expect(player.$).toEqual($);
                 });
                 it('has no cards', function () {
                     expect(player.cards).toEqual([]);
@@ -38,56 +39,42 @@
                 it('knows where hints are shown', function () {
                     expect(player.hint).toEqual($('#card-player-hint'));
                 });
-                it('knows where card history is shown', function () {
-                    expect(player.history).toEqual($('#card-player-history'));
-                });
                 it('knows when hints are shown', function () {
                     expect(player.showHint).toEqual($('#card-player-show-hint'));
                 });
-                it('knows when questions are played as audio', function () {
-                    expect(player.playQuestion).toEqual($('#card-player-play-question'));
+                it('knows where card history is shown', function () {
+                    expect(player.history).toEqual($('#card-player-history'));
                 });
                 it('knows how card history is filled in', function () {
-                    expect(player.historyTemplate).toEqual('{{question}}:{{answer}}<br>');
+                    expect(player.historyTemplate).toEqual('[[question]]:[[answer]]<br>');
                 });
-                it('knows how to play audio', function () {
-                    expect(player.audio.tagName.toLowerCase()).toEqual('audio');
+                it('knows how audio is played', function () {
+                    expect(player.audioPlayer.tagName.toLowerCase()).toEqual('audio');
+                });
+                it('knows which elements play audio', function () {
+                    expect(player.container).toEqual($('body'));
+                    expect(player.audioClass).toEqual('card-player-audio');
+                    expect(player.audioAttribute).toEqual('audio-url');
                 });
             });
 
             describe('can add a card', function () {
-                beforeEach(function () {
+                it('based on a card consisting of 2 sides', function () {
+                    var question, answer;
+                    question = new CardSide('bat', '/resource/text-to-speech/bat');
+                    answer = new CardSide('прилеп', '/resource/text-to-speech/прилеп');
                     player = createCardPlayer('empty');
-                });
-                it('based on question, answer and audio', function () {
-                    player.addCard('bat', 'прилеп', '/resource/text-to-speech/bat');
-                    expect(player.cards[0].question).toEqual('bat');
-                    expect(player.cards[0].answer).toEqual('прилеп');
-                    expect(player.cards[0].audio).toEqual('/resource/text-to-speech/bat');
+                    player.addCard(new Card(question, answer));
+                    expect(player.cards[0].question).toEqual(question);
+                    expect(player.cards[0].answer).toEqual(answer);
                 });
             });
             
-            describe('can fetch the question of the current card', function () {
+            describe('can fetch the current card', function () {
                 it('by checking it', function () {
                     player = createCardPlayer('full');
                     player.loadNextCard();
-                    expect(player.getCurrentQuestion()).toEqual('cat');
-                });
-            });
-
-            describe('can fetch the answer of the current card', function () {
-                it('by checking it', function () {
-                    player = createCardPlayer('full');
-                    player.loadNextCard();
-                    expect(player.getCurrentAnswer()).toEqual('котка');
-                });
-            });
-            
-            describe('can fetch the audio of the current card', function () {
-                it('by checking it', function () {
-                    player = createCardPlayer('full');
-                    player.loadNextCard();
-                    expect(player.getCurrentAudio()).toEqual('/resource/text-to-speech/cat');
+                    expect(player.getCurrentCard()).toEqual(player.cards[0]);
                 });
             });
 
@@ -101,7 +88,7 @@
                 });
                 it('by showing it\'s question', function () {
                     player.loadNextCard();
-                    expect(player.question.html()).toEqual('cat');
+                    expect(player.question.html()).toEqual('cat<a class="card-player-audio" audio-url="/cat">play</a>');
                 });
                 it('by removing the previous answer', function () {
                     player.answer.val('come on');
@@ -113,7 +100,7 @@
                     player.loadNextCard();
                     expect(player.hint.html()).toEqual('');
                 });
-                it('by finishing the player if there are no more left', function () {
+                it('by finishing the player if there are no more cards left', function () {
                     var i = 1;
                     spyOn(player, 'finish');
                     for (i; i <= 4; i += 1) {
@@ -155,20 +142,7 @@
                     player = createCardPlayer('full');
                     player.loadNextCard();
                     player.showCurrentCardHint();
-                    expect(player.hint.html()).toEqual('котка');
-                });
-            });
-            
-            describe('can pronounce the current card question', function () {
-                beforeAll(function () {
-                    player = createCardPlayer('full');
-                    spyOn(player.audio, 'play');
-                });
-                it('by loading it\'s audio', function () {
-                    player.loadNextCard();
-                    player.playCurrentCardAudio();
-                    expect(player.audio.src).toContain('/resource/text-to-speech/cat');
-                    expect(player.audio.play).toHaveBeenCalled();
+                    expect(player.hint.html()).toEqual('котка<a class="card-player-audio" audio-url="/котка">play</a>');
                 });
             });
 
@@ -181,10 +155,47 @@
                     player.addCurrentCardToHistory();
                 });
                 it('by adding a template to history', function () {
-                    expect(player.history.html()).toEqual('cat:котка<br>');
+                    var html = 'cat<a class="card-player-audio" audio-url="/cat">play</a>:' +
+                        'котка<a class="card-player-audio" audio-url="/котка">play</a><br>';
+                    expect(player.history.html()).toEqual(html);
                 });
                 it('by prepending consecutive templates to history', function () {
-                    expect(player.history.html()).toEqual('dog:куче<br>cat:котка<br>');
+                    var html = 'dog<a class="card-player-audio" audio-url="/dog">play</a>:' +
+                        'куче<a class="card-player-audio" audio-url="/куче">play</a><br>' +
+                        'cat<a class="card-player-audio" audio-url="/cat">play</a>:' +
+                        'котка<a class="card-player-audio" audio-url="/котка">play</a><br>';
+                    expect(player.history.html()).toEqual(html);
+                });
+            });
+
+            describe('can pronounce text', function () {
+                var audio;
+                
+                beforeAll(function () {
+                    player = createCardPlayer('full');
+                    player.loadNextCard();
+                    audio = $('.card-player-audio').first();
+                });
+                beforeEach(function () {
+                    spyOn(player.audioPlayer, 'setAttribute');
+                    spyOn(player.audioPlayer, 'play');
+                });
+                it('by loading it from an html element', function () {
+                    player.playAudio(audio);
+                    expect(player.audioPlayer.src).toContain('/cat');
+                    expect(player.audioPlayer.play).toHaveBeenCalled();
+                });
+                it('by doing nothing if the element is missing audio class', function () {
+                    audio.removeClass('card-player-audio');
+                    player.playAudio(audio);
+                    expect(player.audioPlayer.play).not.toHaveBeenCalled();
+                    audio.addClass('card-player-audio');
+                });
+                it('by doing nothing if there is no audio url', function () {
+                    audio.attr('audio-url', '');
+                    player.playAudio(audio);
+                    expect(player.audioPlayer.play).not.toHaveBeenCalled();
+                    audio.attr('audio-url', '/cat');
                 });
             });
 
@@ -194,7 +205,7 @@
                     spyOn(player, 'loadNextCard');
                     spyOn(player, 'answerCurrentCard');
                     spyOn(player, 'showCurrentCardHint');
-                    spyOn(player, 'playCurrentCardAudio');
+                    spyOn(player, 'playAudio');
                     player.start();
                 });
                 it('by loading the first card', function () {
@@ -208,9 +219,9 @@
                     player.showHint.click();
                     expect(player.showCurrentCardHint).toHaveBeenCalled();
                 });
-                it('by watching for clicks on the play question button', function () {
-                    player.playQuestion.click();
-                    expect(player.playCurrentCardAudio).toHaveBeenCalled();
+                it('by watching for clicks on play audio buttons', function () {
+                    $('.' + player.audioClass).click();
+                    expect(player.playAudio).toHaveBeenCalled();
                 });
             });
 
@@ -221,6 +232,7 @@
                     player.answer.val('great');
                     spyOn(player, 'answerCurrentCard');
                     spyOn(player, 'showCurrentCardHint');
+                    spyOn(player, 'playAudio');
                     player.finish();
                 });
                 it('by showing the finished message', function () {
@@ -237,6 +249,10 @@
                     player.showHint.click();
                     expect(player.showCurrentCardHint).not.toHaveBeenCalled();
                 });
+                it('by not watching for clicks on the play audio buttons anymore', function () {
+                    $('.' + player.audioClass).click();
+                    expect(player.playAudio).not.toHaveBeenCalled();
+                });
             });
         });
     });
@@ -248,8 +264,12 @@
      * @returns {CardPlayer}
      */
     function createCardPlayer(type) {
-        var player = new CardPlayer($, {
-            'historyTemplate': '{{question}}:{{answer}}<br>'
+        var template, player;
+        template = {
+            outputTemplate: '[[text]]<a class="card-player-audio" audio-url="[[audio]]">play</a>'
+        };
+        player = new CardPlayer($, {
+            historyTemplate: '[[question]]:[[answer]]<br>'
         });
         $('#card-player-question').html('');
         $('#card-player-answer').val('');
@@ -257,10 +277,22 @@
         // add cards for each available type
         switch (type) {
         case 'full':
-            player.addCard('cat', 'котка', '/resource/text-to-speech/cat');
-            player.addCard('dog', 'куче', '/resource/text-to-speech/dog');
-            player.addCard('rat', 'плъх', '/resource/text-to-speech/rat');
-            player.addCard('котка', 'cat', '/resource/text-to-speech/nothing');
+            player.addCard(new Card(
+                new CardSide('cat', '/cat', template),
+                new CardSide('котка', '/котка', template)
+            ));
+            player.addCard(new Card(
+                new CardSide('dog', '/dog', template),
+                new CardSide('куче', '/куче', template)
+            ));
+            player.addCard(new Card(
+                new CardSide('rat', '/rat', template),
+                new CardSide('плъх', '/плъх', template)
+            ));
+            player.addCard(new Card(
+                new CardSide('котка', '/котка', template),
+                new CardSide('cat', '/cat', template)
+            ));
             break;
         }
 
