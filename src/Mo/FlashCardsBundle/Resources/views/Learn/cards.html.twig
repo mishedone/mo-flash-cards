@@ -39,9 +39,9 @@
             
             // add cards
             {% for card in deck.getCards %}
-                front = new CardSide('{{ card.front }}', '{{ path('mofc_resource_text_to_speech', {'text': card.front}) }}', sideOptions);
-                back = new CardSide('{{ card.back }}', '{{ path('mofc_resource_text_to_speech', {'text': card.back}) }}', sideOptions);
-                                     
+                front = new CardSide('{{ card.front|escape('js') }}', '{{ path('mofc_resource_text_to_speech', {'text': card.front}) }}', sideOptions);
+                back = new CardSide('{{ card.back|escape('js') }}', '{{ path('mofc_resource_text_to_speech', {'text': card.back}) }}', sideOptions);
+                
                 {% if forward %}
                     player.addCard(new Card(front, back));
                 {% else %}

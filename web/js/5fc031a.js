@@ -3832,28 +3832,43 @@ CardPlayer.prototype.finish = function () {
                 });
             });
 
-            describe('can answer the current card (no matter in what letter case)', function () {
+            describe('can answer the current card', function () {
                 beforeEach(function () {
                     player = createCardPlayer('full');
                     player.loadNextCard();
                     spyOn(player, 'addCurrentCardToHistory');
                     spyOn(player, 'loadNextCard');
                 });
-                it('by adding the current card to history if correct', function () {
-                    player.answer.val('коТКа');
-                    player.answerCurrentCard();
-                    expect(player.addCurrentCardToHistory).toHaveBeenCalled();
+                describe('and if incorrect', function () {
+                    it('does nothing', function () {
+                        player.answer.val('котк');
+                        player.answerCurrentCard();
+                        expect(player.addCurrentCardToHistory).not.toHaveBeenCalled();
+                        expect(player.loadNextCard).not.toHaveBeenCalled();
+                    });
                 });
-                it('by loading the next card if correct', function () {
-                    player.answer.val('коТКа');
-                    player.answerCurrentCard();
-                    expect(player.loadNextCard).toHaveBeenCalled();
-                });
-                it('by doing nothing if incorrect', function () {
-                    player.answer.val('котк');
-                    player.answerCurrentCard();
-                    expect(player.addCurrentCardToHistory).not.toHaveBeenCalled();
-                    expect(player.loadNextCard).not.toHaveBeenCalled();
+                describe('and if correct', function () {
+                    it('adds it to history', function () {
+                        player.answer.val('котка');
+                        player.answerCurrentCard();
+                        expect(player.addCurrentCardToHistory).toHaveBeenCalled();
+                    });
+                    it('loads the next card', function () {
+                        player.answer.val('котка');
+                        player.answerCurrentCard();
+                        expect(player.loadNextCard).toHaveBeenCalled();
+                    });
+                    it('works no matter the latter case', function () {
+                        player.answer.val('коТКа');
+                        player.answerCurrentCard();
+                        expect(player.loadNextCard).toHaveBeenCalled();
+                    });
+                    it('works with all types of quotes', function () {
+                        player.cards[0].answer.text = 'I\'m';
+                        player.answer.val('I\'m');
+                        player.answerCurrentCard();
+                        expect(player.loadNextCard).toHaveBeenCalled();
+                    });
                 });
             });
 
