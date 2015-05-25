@@ -21,6 +21,9 @@
         "sensio/distribution-bundle": "3.0.13",
         "sensio/framework-extra-bundle": "~3.0",
         "incenteev/composer-parameter-handler": "~2.0",
+        "friendsofsymfony/rest-bundle": "1.6.*@dev",
+        "jms/serializer-bundle": "0.13.*@dev",
+        "nelmio/api-doc-bundle": "2.9.*@dev",
         "components/jquery": "2.1.3",
         "twbs/bootstrap": "v3.0.0"
     },
