@@ -25,6 +25,9 @@ framework:
     fragments:       ~
     http_method_override: true
 
+sensio_framework_extra:
+    view: { annotations: false }
+
 # Twig Configuration
 twig:
     debug:            "%kernel.debug%"
@@ -86,3 +89,11 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
+
+# FOS Rest Configuration
+fos_rest:
+    routing_loader:
+        default_format: json
+        include_format: false
+    view:
+        view_response_listener: force
