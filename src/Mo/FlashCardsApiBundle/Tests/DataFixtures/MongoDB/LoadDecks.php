@@ -1,12 +1,12 @@
 <?php
 
-namespace Mo\FlashCardsBundle\Tests\DataFixtures\MongoDB;
+namespace Mo\FlashCardsApiBundle\Tests\DataFixtures\MongoDB;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Mo\FlashCardsBundle\Document\Deck;
-use Mo\FlashCardsBundle\Document\Card;
+use Mo\FlashCardsApiBundle\Document\Deck;
+use Mo\FlashCardsApiBundle\Document\Card;
 
 class LoadDecks implements FixtureInterface
 {
@@ -15,24 +15,24 @@ class LoadDecks implements FixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        // create animals deck
-        $animalsDeck = $this->createDeck('Animals', 'animals');
-        $animalsDeck->addCard($this->createCard('cat', 'котка'));
-        $animalsDeck->addCard($this->createCard('dog', 'куче'));
+        // create pets deck
+        $petsDeck = $this->createDeck('Pets', 'pets');
+        $petsDeck->addCard($this->createCard('kitty', 'kotence'));
+        $petsDeck->addCard($this->createCard('doggy', 'kuchence'));
 
-        // create cars deck
-        $carsDeck = $this->createDeck('Cars', 'cars');
+        // create cards deck
+        $cardsDeck = $this->createDeck('Cards', 'cards');
         
         // save decks
-        $manager->persist($animalsDeck);
-        $manager->persist($carsDeck);
+        $manager->persist($petsDeck);
+        $manager->persist($cardsDeck);
         $manager->flush();
     }
     
     /**
      * @param string $name
      * @param string $slug
-     * @return \Mo\FlashCardsBundle\Document\Deck
+     * @return \Mo\FlashCardsApiBundle\Document\Deck
      */
     protected function createDeck($name, $slug)
     {
@@ -46,7 +46,7 @@ class LoadDecks implements FixtureInterface
     /**
      * @param string $front
      * @param string $back
-     * @return \Mo\FlashCardsBundle\Document\Card
+     * @return \Mo\FlashCardsApiBundle\Document\Card
      */
     protected function createCard($front, $back)
     {
