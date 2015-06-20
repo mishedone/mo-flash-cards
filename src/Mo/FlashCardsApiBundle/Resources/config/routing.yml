@@ -1,0 +1,4 @@
+decks:
+    resource: "Mo\FlashCardsApiBundle\Controller\DeckController"
+    type: rest
+    name_prefix: mofc_api_ # naming collision

@@ -1,3 +1,8 @@
+api:
+    resource: "@MoFlashCardsApiBundle/Resources/config/routing.yml"
+    type: rest
+    prefix: /api
+
 mo_flash_cards:
     resource: "@MoFlashCardsBundle/Resources/config/routing.yml"
     prefix: /
