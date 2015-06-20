@@ -8,6 +8,7 @@ class LearnControllerTest extends DocumentWebTestCase
 {
     public function testDecks()
     {
+        $this->markTestIncomplete();
         $client = static::createClient(array(), $this->user);
         $crawler = $client->request('GET', '/en/learn/decks');
         
@@ -20,6 +21,7 @@ class LearnControllerTest extends DocumentWebTestCase
     
     public function testCards()
     {
+        $this->markTestIncomplete();
         $client = static::createClient(array(), $this->user);
         $crawler = $client->request('GET', '/en/learn/cards/animals');
         

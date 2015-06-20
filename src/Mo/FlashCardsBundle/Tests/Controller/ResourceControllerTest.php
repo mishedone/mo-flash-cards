@@ -8,6 +8,7 @@ class ResourceControllerTest extends DocumentWebTestCase
 {
     public function testTextToSpeech()
     {
+        $this->markTestIncomplete();
         $client = static::createClient(array(), $this->user);
         $client->request('GET', '/resource/text-to-speech/hello');
         
