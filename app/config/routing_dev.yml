@@ -16,7 +16,12 @@ _errors:
 
 _main:
     resource: routing.yml
+    
+# api documentation routes
+api_documentation:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /api/doc
 
-# MoFlashCardsBundle test routes
-mo_flash_cards_tests:
+# frontend test routes
+frontend_tests:
     resource: "@MoFlashCardsBundle/Resources/config/routing_tests.yml"

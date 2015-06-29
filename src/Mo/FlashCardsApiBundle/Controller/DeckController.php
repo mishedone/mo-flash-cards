@@ -3,6 +3,7 @@
 namespace Mo\FlashCardsApiBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 use Mo\FlashCardsApiBundle\Document\Deck;
 
@@ -14,6 +15,8 @@ class DeckController extends FOSRestController
     /**
      * Lists all available decks.
      *
+     * @ApiDoc()
+     *
      * @return array
      */
     public function getDecksAction()
@@ -24,8 +27,13 @@ class DeckController extends FOSRestController
     }
     
     /**
-     * Loads a certain deck.
+     * Loads a certain deck by it's slug.
      *
+     * @ApiDoc()
+     *
+     * @throws NotFoundHttpException When deck does not exist.
+     *
+     * @param string $slug
      * @return Deck
      */
     public function getDeckAction($slug)
