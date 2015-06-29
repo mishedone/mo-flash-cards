@@ -30,8 +30,15 @@ class DeckController extends FOSRestController
      */
     public function getDeckAction($slug)
     {
-        return $this->get('doctrine_mongodb')
+        $deck = $this->get('doctrine_mongodb')
             ->getRepository('MoFlashCardsApiBundle:Deck')
             ->findOneBySlug($slug);
+        
+        // 404 when no deck is found
+        if (!$deck) {
+            throw $this->createNotFoundException();
+        }
+        
+        return $deck;
     }
 }
