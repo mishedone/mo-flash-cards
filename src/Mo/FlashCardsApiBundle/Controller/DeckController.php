@@ -3,6 +3,7 @@
 namespace Mo\FlashCardsApiBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 use Mo\FlashCardsApiBundle\Document\Deck;
@@ -17,6 +18,8 @@ class DeckController extends FOSRestController
      *
      * @ApiDoc()
      *
+     * @View(serializerGroups={"list"})
+     *
      * @return array
      */
     public function getDecksAction()
@@ -30,6 +33,8 @@ class DeckController extends FOSRestController
      * Loads a certain deck by it's slug.
      *
      * @ApiDoc()
+     *
+     * @View(serializerGroups={"details"})
      *
      * @throws NotFoundHttpException When deck does not exist.
      *

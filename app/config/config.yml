@@ -100,3 +100,6 @@ fos_rest:
 
 # Nelmio Api Doc Configuration
 nelmio_api_doc: ~
+
+# JMS Serializer Configuration
+jms_serializer: ~
