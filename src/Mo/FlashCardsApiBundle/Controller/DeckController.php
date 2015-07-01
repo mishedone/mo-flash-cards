@@ -2,17 +2,40 @@
 
 namespace Mo\FlashCardsApiBundle\Controller;
 
-use FOS\RestBundle\Controller\FOSRestController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 use FOS\RestBundle\Controller\Annotations\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
+use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 use Mo\FlashCardsApiBundle\Document\Deck;
 
 /**
  * Provide REST for decks, cards and all subrelated stuff.
  */
-class DeckController extends FOSRestController
+class DeckController
 {
+    /**
+     * @var ManagerRegistry
+     */
+    protected $mongo;
+    
+    /**
+     * @return ManagerRegistry
+     */
+    protected function getMongo()
+    {
+        return $this->mongo;
+    }
+    
+    /**
+     * @param ManagerRegistry $mongo
+     */
+    public function __construct(ManagerRegistry $mongo)
+    {
+        $this->mongo = $mongo;
+    }
+    
     /**
      * Lists all available decks.
      *
@@ -28,7 +51,7 @@ class DeckController extends FOSRestController
      */
     public function getDecksAction()
     {
-        return $this->get('doctrine_mongodb')
+        return $this->getMongo()
             ->getRepository('MoFlashCardsApiBundle:Deck')
             ->findAll();
     }
@@ -59,13 +82,13 @@ class DeckController extends FOSRestController
      */
     public function getDeckAction($slug)
     {
-        $deck = $this->get('doctrine_mongodb')
+        $deck = $this->getMongo()
             ->getRepository('MoFlashCardsApiBundle:Deck')
             ->findOneBySlug($slug);
         
         // 404 when no deck is found
         if (!$deck) {
-            throw $this->createNotFoundException();
+            throw new NotFoundHttpException('Not found');
         }
         
         return $deck;
