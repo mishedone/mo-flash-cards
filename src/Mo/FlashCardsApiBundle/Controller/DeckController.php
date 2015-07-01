@@ -16,7 +16,11 @@ class DeckController extends FOSRestController
     /**
      * Lists all available decks.
      *
-     * @ApiDoc()
+     * @ApiDoc(
+     *   statusCodes={
+     *     200="On success"
+     *   }
+     * )
      *
      * @View(serializerGroups={"list"})
      *
@@ -32,7 +36,19 @@ class DeckController extends FOSRestController
     /**
      * Loads a certain deck by it's slug.
      *
-     * @ApiDoc()
+     * @ApiDoc(
+     *   requirements={
+     *     {
+     *       "name"="slug",
+     *       "dataType"="string",
+     *       "description"="Deck identifier"
+     *     }
+     *   },
+     *   statusCodes={
+     *     200="On success",
+     *     404="When no deck is found"
+     *   }
+     * )
      *
      * @View(serializerGroups={"details"})
      *
