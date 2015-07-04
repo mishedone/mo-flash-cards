@@ -2,3 +2,5 @@ services:
   mofc.api.controller.deck:
     class: Mo\FlashCardsApiBundle\Controller\DeckController
     arguments: [@doctrine_mongodb]
+  mofc.api.controller.resource:
+    class: Mo\FlashCardsApiBundle\Controller\ResourceController

@@ -1,4 +1,10 @@
-decks:
+deck:
     resource: "mofc.api.controller.deck"
     type: rest
-    name_prefix: mofc_api_ # naming collision
+    name_prefix: mofc_api_
+
+# custom routes
+mofc_api_get_tts_resource:
+    path: /resources/text-to-speech/{text}
+    defaults: { _controller: mofc.api.controller.resource:textToSpeechAction }
+    methods: [GET]

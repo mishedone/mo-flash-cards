@@ -33,6 +33,20 @@ abstract class ApiTestCase extends WebTestCase
     }
     
     /**
+     * Uses the router service to generate urls so tests
+     * pass with whatever prefix they are setup.
+     *
+     * @param Client $client
+     * @param string $name
+     * @param array  $parameters Default: array().
+     * @return string
+     */
+    protected function generateUrl(Client $client, $name, $parameters = array())
+    {
+        return $client->getContainer()->get('router')->generate($name, $parameters);
+    }
+
+    /**
      * Resets the state of the database.
      */
     static protected function resetDatabase()

@@ -3,7 +3,7 @@ api:
     type: rest
     prefix: /api
 
-mo_flash_cards:
+flash_cards:
     resource: "@MoFlashCardsBundle/Resources/config/routing.yml"
     prefix: /
     requirements:

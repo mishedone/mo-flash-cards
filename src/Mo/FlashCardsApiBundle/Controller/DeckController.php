@@ -3,10 +3,8 @@
 namespace Mo\FlashCardsApiBundle\Controller;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
 use FOS\RestBundle\Controller\Annotations\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-
 use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 use Mo\FlashCardsApiBundle\Document\Deck;
 
