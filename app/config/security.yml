@@ -39,4 +39,3 @@ security:
     access_control:
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         - { path: ^/(bg|en)/learn, roles: ROLE_USER }
-        - { path: ^/resource, roles: ROLE_USER }

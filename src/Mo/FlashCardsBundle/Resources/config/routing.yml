@@ -6,8 +6,3 @@ mofc_learn_decks:
 mofc_learn_cards:
     path:     /{_locale}/learn/cards/{deckSlug}/{direction}
     defaults: { _controller: MoFlashCardsBundle:Learn:cards, direction: MoFlashCardsBundle:LearnController:FRONT_TO_BACK }
-
-# resource routes
-mofc_resource_text_to_speech:
-    path:     /resource/text-to-speech/{text}
-    defaults: { _controller: MoFlashCardsBundle:Resource:textToSpeech }
