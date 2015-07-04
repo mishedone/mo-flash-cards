@@ -19,7 +19,6 @@ class AppKernel extends Kernel
             new FOS\RestBundle\FOSRestBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
-            new AppBundle\AppBundle(),
             new Mo\FlashCardsApiBundle\MoFlashCardsApiBundle(),
             new Mo\FlashCardsBundle\MoFlashCardsBundle(),
         );
