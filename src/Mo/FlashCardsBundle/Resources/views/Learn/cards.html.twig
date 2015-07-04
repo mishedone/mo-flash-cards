@@ -39,8 +39,8 @@
             
             // add cards
             {% for card in deck.getCards %}
-                front = new CardSide('{{ card.front|escape('js') }}', '{{ path('mofc_api_get_tts_resource', {'text': card.front}) }}', sideOptions);
-                back = new CardSide('{{ card.back|escape('js') }}', '{{ path('mofc_api_get_tts_resource', {'text': card.back}) }}', sideOptions);
+                front = new CardSide('{{ card.front|escape('js') }}', '{{ path('mofc_api_get_tts', {'text': card.front}) }}', sideOptions);
+                back = new CardSide('{{ card.back|escape('js') }}', '{{ path('mofc_api_get_tts', {'text': card.back}) }}', sideOptions);
                 
                 {% if forward %}
                     player.addCard(new Card(front, back));

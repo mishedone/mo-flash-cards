@@ -9,7 +9,7 @@ class ResourceControllerTest extends ApiTestCase
     public function testTextToSpeech()
     {
         $client = static::createClient();
-        $url = $this->generateUrl($client, 'mofc_api_get_tts_resource', array('text' => 'hello'));
+        $url = $this->generateUrl($client, 'mofc_api_get_tts', array('text' => 'hello'));
         $client->request('GET', $url);
 
         // check response headers
