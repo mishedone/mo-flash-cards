@@ -20,9 +20,7 @@ class LearnController extends Controller
      */
     public function decksAction()
     {
-        $decks = $this->get('doctrine_mongodb')
-            ->getRepository('MoFlashCardsBundle:Deck')
-            ->findAll();
+        $decks = $this->get('mofc.api.controller.deck')->getDecksAction();
         
         return $this->render('MoFlashCardsBundle:Learn:decks.html.twig', array('decks' => $decks));
     }
@@ -34,14 +32,7 @@ class LearnController extends Controller
      */
     public function cardsAction($deckSlug, $direction)
     {
-        $deck = $this->get('doctrine_mongodb')
-            ->getRepository('MoFlashCardsBundle:Deck')
-            ->findOneBySlug($deckSlug);
-        
-        // 404 if there is no such deck
-        if (!$deck) {
-            throw $this->createNotFoundException();
-        }
+        $deck = $this->get('mofc.api.controller.deck')->getDeckAction($deckSlug);
         
         // choose proper direction
         $forward = self::BACK_TO_FRONT == $direction ? false : true;
