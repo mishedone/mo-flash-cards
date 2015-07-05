@@ -6,3 +6,8 @@ mofc_learn_decks:
 mofc_learn_cards:
     path:     /{_locale}/learn/cards/{deckSlug}/{direction}
     defaults: { _controller: MoFlashCardsBundle:Learn:cards, direction: MoFlashCardsBundle:LearnController:FRONT_TO_BACK }
+
+# our single page application
+mofc_app:
+    path:     /
+    defaults: { _controller: MoFlashCardsBundle:App:index }

@@ -1,4 +1,4 @@
-api:
+flash_cards_api:
     resource: "@MoFlashCardsApiBundle/Resources/config/routing.yml"
     type: rest
     prefix: /api
@@ -8,10 +8,6 @@ flash_cards:
     prefix: /
     requirements:
         _locale: en|bg
-
-homepage:
-    path: /
-    defaults: { _controller: MoFlashCardsBundle:Learn:decks, _locale: bg }
     
 logout:
     path: /logout
