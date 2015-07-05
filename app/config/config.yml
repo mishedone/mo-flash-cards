@@ -53,6 +53,12 @@ assetic:
         jquery_js:
             inputs:
                 - '%kernel.root_dir%/../vendor/components/jquery/jquery.min.js'
+        underscore_js:
+            inputs:
+                - '%kernel.root_dir%/../vendor/components/underscore/underscore-min.js'
+        backbone_js:
+            inputs:
+                - '%kernel.root_dir%/../vendor/components/backbone/backbone-min.js'
         # bootstrap fonts
         fonts_glyphicons_eot:
             inputs:

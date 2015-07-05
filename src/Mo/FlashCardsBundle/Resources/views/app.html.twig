@@ -1,1 +1,16 @@
 {% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {% stylesheets '@bootstrap_css' filter='cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {% javascripts
+        '@jquery_js'
+        '@underscore_js'
+        '@backbone_js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
