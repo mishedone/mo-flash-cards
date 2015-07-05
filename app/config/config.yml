@@ -50,15 +50,19 @@ assetic:
         bootstrap_css:
             inputs:
                 - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap.min.css'
+            output: "assetic/css/bootstrap.css"
         jquery_js:
             inputs:
                 - '%kernel.root_dir%/../vendor/components/jquery/jquery.min.js'
+            output: "assetic/js/jquery.js"
         underscore_js:
             inputs:
                 - '%kernel.root_dir%/../vendor/components/underscore/underscore-min.js'
+            output: "assetic/js/underscore.js"
         backbone_js:
             inputs:
                 - '%kernel.root_dir%/../vendor/components/backbone/backbone-min.js'
+            output: "assetic/js/backbone.js"
         # bootstrap fonts
         fonts_glyphicons_eot:
             inputs:
