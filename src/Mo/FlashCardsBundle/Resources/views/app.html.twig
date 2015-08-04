@@ -54,15 +54,12 @@
             },
 
             elements: {
+                finish: {},
                 question: {},
                 answer: {},
                 hint: {},
                 showHint: {},
                 history: {},
-            },
-
-            messages: {
-                finish: 'No more cards in this deck.'
             },
 
             initialize: function(options) {
@@ -164,6 +161,7 @@
                 this.data.cards = this.model.get('cards');
 
                 // initialize dom elements
+                this.elements.finish = this.$el.find('#finish');
                 this.elements.question = this.$el.find('#question');
                 this.elements.answer = this.$el.find('#answer');
                 this.elements.hint = this.$el.find('#hint');
@@ -186,7 +184,8 @@
             },
 
             finish: function() {
-                this.elements.question.html(this.messages.finish);
+                this.elements.finish.removeClass('hidden');
+                this.elements.question.hide();
                 this.elements.answer.val('');
                 this.elements.answer.off('keyup');
                 this.elements.showHint.off('click');
@@ -208,6 +207,9 @@
                     collection: decks
                 });
 
+                // set title
+                document.title = "{{ 'deck-list.meta.title'|trans }}"
+
                 // render the deck list
                 decks.fetch({
                     success: function() {
@@ -226,6 +228,10 @@
                     model: deck,
                     frontToBack: frontToBack
                 });
+
+                // set title
+                var title = "{{ 'deck-learn.meta.title'|trans }}"
+                document.title = title.replace('%deck%', slug);
 
                 // render the deck learn environment
                 deck.fetch({
@@ -247,7 +253,7 @@
 
     <script type="text/template" id="deck-list">
         <div class="row">
-            <h1>Choose your deck</h1>
+            <h1>{{ 'deck-list.content.heading'|trans }}</h1>
             <table class="table">
                 <tbody>
                     <% decks.forEach(function (deck) { %>
@@ -273,14 +279,15 @@
         <div class="row">
             <h1><%= deck.get('name') %></h1>
 
-            <div id="question" style="float: left;">Loading cards...</div>
+            <div id="finish" class="hidden" style="float: left;">{{ 'deck-learn.message.finish'|trans }}</div>
+            <div id="question" style="float: left;">{{ 'deck-learn.message.loading'|trans }}</div>
 
-            <input id="answer" type="text" class="form-control" placeholder="Type in your answer here">
+            <input id="answer" type="text" class="form-control" placeholder="{{ 'deck-learn.form.placeholder.answer'|trans }}">
 
-            <button id="show-hint" class="btn btn-default btn-primary">Hint</button>
+            <button id="show-hint" class="btn btn-default btn-primary">{{ 'deck-learn.action.hint'|trans }}</button>
             <div id="hint"></div>
 
-            <a href="#deck/list" class="btn btn-default">Choose another deck</a><br>
+            <a href="#deck/list" class="btn btn-default">{{ 'deck-learn.action.back'|trans }}</a><br>
 
             <dl id="history" class="dl-horizontal"></dl>
         </div>

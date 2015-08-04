@@ -1,10 +1,10 @@
 # organization help: http://obtao.com/blog/2013/06/how-to-organize-your-translations-in-symfony/
-learnDecks:
+deck-list:
     meta:
         title: Choose a deck to learn
     content:
         heading: Choose your deck
-learnCards:
+deck-learn:
     action:
         hint: Hint
         back: Choose another deck
@@ -16,5 +16,4 @@ learnCards:
     form:
         placeholder:
             answer: Type in your answer here
-        
         

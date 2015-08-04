@@ -9,5 +9,5 @@ mofc_learn_cards:
 
 # our single page application
 mofc_app:
-    path:     /
-    defaults: { _controller: MoFlashCardsBundle:App:index }
+    path:     /{_locale}
+    defaults: { _controller: MoFlashCardsBundle:App:index, _locale: bg }
