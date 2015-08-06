@@ -15,6 +15,12 @@
     {% endjavascripts %}
 
     <script type="text/javascript">
+        var messages = {
+            deckListMetaTitle: "{{ 'deck-list.meta.title'|trans }}",
+            deckLearnMetaTitle: "{{ 'deck-learn.meta.title'|trans }}",
+            deckLearnFinish: "{{ 'deck-learn.message.finish'|trans }}"
+        };
+
         var DeckModel = Backbone.Model.extend({
             defaults: {
                 name: '',
@@ -54,7 +60,6 @@
             },
 
             elements: {
-                finish: {},
                 question: {},
                 answer: {},
                 hint: {},
@@ -161,7 +166,6 @@
                 this.data.cards = this.model.get('cards');
 
                 // initialize dom elements
-                this.elements.finish = this.$el.find('#finish');
                 this.elements.question = this.$el.find('#question');
                 this.elements.answer = this.$el.find('#answer');
                 this.elements.hint = this.$el.find('#hint');
@@ -184,8 +188,7 @@
             },
 
             finish: function() {
-                this.elements.finish.removeClass('hidden');
-                this.elements.question.hide();
+                this.elements.question.html(messages.deckLearnFinish);
                 this.elements.answer.val('');
                 this.elements.answer.off('keyup');
                 this.elements.showHint.off('click');
@@ -208,7 +211,7 @@
                 });
 
                 // set title
-                document.title = "{{ 'deck-list.meta.title'|trans }}"
+                document.title = messages.deckListMetaTitle
 
                 // render the deck list
                 decks.fetch({
@@ -230,8 +233,7 @@
                 });
 
                 // set title
-                var title = "{{ 'deck-learn.meta.title'|trans }}"
-                document.title = title.replace('%deck%', slug);
+                document.title = messages.deckLearnMetaTitle.replace('%deck%', slug);
 
                 // render the deck learn environment
                 deck.fetch({
@@ -279,7 +281,6 @@
         <div class="row">
             <h1><%= deck.get('name') %></h1>
 
-            <div id="finish" class="hidden" style="float: left;">{{ 'deck-learn.message.finish'|trans }}</div>
             <div id="question" style="float: left;">{{ 'deck-learn.message.loading'|trans }}</div>
 
             <input id="answer" type="text" class="form-control" placeholder="{{ 'deck-learn.form.placeholder.answer'|trans }}">
