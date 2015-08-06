@@ -113,3 +113,7 @@ nelmio_api_doc: ~
 
 # JMS Serializer Configuration
 jms_serializer: ~
+
+# FOS JS Routing Configuration
+fos_js_routing:
+    routes_to_expose: [ mofc_api_ ]

@@ -10,7 +10,9 @@
     {% javascripts
         '@jquery_js'
         '@underscore_js'
-        '@backbone_js' %}
+        '@backbone_js'
+        'bundles/fosjsrouting/js/router.js'
+        'js/fos_js_routes.js' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
@@ -27,12 +29,12 @@
                 slug: '',
                 cards: []
             },
-            urlRoot: '/api/decks'
+            urlRoot: Routing.generate('mofc_api_get_decks')
         });
 
         var DeckCollection = Backbone.Collection.extend({
             model: DeckModel,
-            url: '/api/decks'
+            url: Routing.generate('mofc_api_get_decks')
         });
 
         var DeckListView = Backbone.View.extend({
@@ -104,7 +106,7 @@
             getCardSideTemplate(text) {
                 return this.cardSideTemplate({
                     text: text,
-                    audioUrl: '/api/text-to-speech/' + text
+                    audioUrl: Routing.generate('mofc_api_get_tts', {text: text})
                 });
             },
 
@@ -192,7 +194,6 @@
                 this.elements.answer.val('');
                 this.elements.answer.off('keyup');
                 this.elements.showHint.off('click');
-                this.$el.off('click');
             }
         });
 
