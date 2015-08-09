@@ -117,3 +117,16 @@ jms_serializer: ~
 # FOS JS Routing Configuration
 fos_js_routing:
     routes_to_expose: [ mofc_api_ ]
+
+# FOS Http Cache Configuration
+fos_http_cache:
+    cache_control:
+        rules:
+            -
+                match:
+                    path: ^/api
+                headers:
+                    cache_control:
+                        private: true
+                        max_age: 3600
+                        s_maxage: 3600
