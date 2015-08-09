@@ -262,10 +262,10 @@
                     <% decks.forEach(function (deck) { %>
                         <tr>
                             <td>
-                                <a href="#deck/learn/<%= deck.get('slug') %>" class="btn btn-default btn-xs" aria-label="Front to back">
+                                <a href="#/deck/learn/<%= deck.get('slug') %>" class="btn btn-default btn-xs" aria-label="Front to back">
                                     <span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>
                                 </a>
-                                <a href="#deck/learn/<%= deck.get('slug') %>/back-to-front"class="btn btn-default btn-xs" aria-label="Back to front">
+                                <a href="#/deck/learn/<%= deck.get('slug') %>/back-to-front"class="btn btn-default btn-xs" aria-label="Back to front">
                                     <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
                                 </a>
 
@@ -289,7 +289,7 @@
             <button id="show-hint" class="btn btn-default btn-primary">{{ 'deck-learn.action.hint'|trans }}</button>
             <div id="hint"></div>
 
-            <a href="#deck/list" class="btn btn-default">{{ 'deck-learn.action.back'|trans }}</a><br>
+            <a href="#/deck/list" class="btn btn-default">{{ 'deck-learn.action.back'|trans }}</a><br>
 
             <dl id="history" class="dl-horizontal"></dl>
         </div>
