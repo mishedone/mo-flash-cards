@@ -1,12 +1,3 @@
-# learn routes
-mofc_learn_decks:
-    path:     /{_locale}/learn/decks
-    defaults: { _controller: MoFlashCardsBundle:Learn:decks }
-
-mofc_learn_cards:
-    path:     /{_locale}/learn/cards/{deckSlug}/{direction}
-    defaults: { _controller: MoFlashCardsBundle:Learn:cards, direction: MoFlashCardsBundle:LearnController:FRONT_TO_BACK }
-
 # our single page application
 mofc_app:
     path:     /{_locale}

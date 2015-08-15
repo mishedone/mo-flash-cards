@@ -1,4 +1,0 @@
-services:
-#    mo_flash_cards.example:
-#        class: Mo\FlashCardsBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
