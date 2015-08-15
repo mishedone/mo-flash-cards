@@ -7,304 +7,35 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script type="text/javascript">
+        var Messages = {
+            deckListMetaTitle: "{{ 'deck-list.meta.title'|trans }}",
+            deckLearnMetaTitle: "{{ 'deck-learn.meta.title'|trans }}",
+            deckLearnFinish: "{{ 'deck-learn.message.finish'|trans }}"
+        };
+    </script>
+
     {% javascripts
         '@jquery_js'
         '@underscore_js'
         '@backbone_js'
         'bundles/fosjsrouting/js/router.js'
-        'js/fos_js_routes.js' %}
+        'js/fos_js_routes.js'
+        '@MoFlashCardsBundle/Resources/public/js/models/deck.js'
+        '@MoFlashCardsBundle/Resources/public/js/collections/deck.js'
+        '@MoFlashCardsBundle/Resources/public/js/views/deck-list.js'
+        '@MoFlashCardsBundle/Resources/public/js/views/deck-learn.js'
+        '@MoFlashCardsBundle/Resources/public/js/router.js' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
-
-    <script type="text/javascript">
-        var messages = {
-            deckListMetaTitle: "{{ 'deck-list.meta.title'|trans }}",
-            deckLearnMetaTitle: "{{ 'deck-learn.meta.title'|trans }}",
-            deckLearnFinish: "{{ 'deck-learn.message.finish'|trans }}"
-        };
-
-        var DeckModel = Backbone.Model.extend({
-            defaults: {
-                name: '',
-                slug: '',
-                cards: []
-            },
-            urlRoot: Routing.generate('mofc_api_get_decks')
-        });
-
-        var DeckCollection = Backbone.Collection.extend({
-            model: DeckModel,
-            url: Routing.generate('mofc_api_get_decks')
-        });
-
-        var DeckListView = Backbone.View.extend({
-            template: _.template($('#deck-list').html()),
-
-            render: function() {
-                this.$el.html(this.template({
-                    decks: this.collection
-                }));
-
-                return this;
-            }
-        });
-
-        var DeckLearnView = Backbone.View.extend({
-            template: _.template($('#deck-learn').html()),
-            cardSideTemplate: _.template($('#card-side').html()),
-            historyRowTemplate: _.template($('#history-row').html()),
-
-            data: {
-                cards: [],
-                current: null,
-                audio: null,
-                frontToBack: true
-            },
-
-            elements: {
-                question: {},
-                answer: {},
-                hint: {},
-                showHint: {},
-                history: {},
-            },
-
-            initialize: function(options) {
-                this.data.audio = document.createElement('audio');
-                this.data.frontToBack = options.frontToBack;
-            },
-
-            render: function() {
-                this.$el.html(this.template({
-                    deck: this.model
-                }));
-                this.start();
-
-                return this;
-            },
-
-            getCurrentCard: function() {
-                return this.data.cards[this.data.current];
-            },
-
-            getCurrentCardQuestion: function() {
-                if (this.data.frontToBack) {
-                    return this.getCurrentCard().front;
-                } else {
-                    return this.getCurrentCard().back;
-                }
-            },
-
-            getCurrentCardAnswer: function() {
-                if (this.data.frontToBack) {
-                    return this.getCurrentCard().back;
-                } else {
-                    return this.getCurrentCard().front;
-                }
-            },
-
-            getCardSideTemplate(text) {
-                return this.cardSideTemplate({
-                    text: text,
-                    audioUrl: Routing.generate('mofc_api_get_tts', {text: text})
-                });
-            },
-
-            loadNextCard: function() {
-                var next = (this.data.current === null) ? 0 : this.data.current + 1;
-
-                // clear hint
-                this.elements.hint.html('');
-
-                // update conditional properties
-                if (typeof this.data.cards[next] !== 'undefined') {
-                    this.data.current = next;
-                    this.elements.answer.val('');
-                    this.elements.question.html(this.getCardSideTemplate(
-                        this.getCurrentCardQuestion()
-                    ));
-                } else {
-                    this.finish();
-                }
-            },
-
-            answerCurrentCard: function() {
-                if (this.elements.answer.val().toLowerCase() === this.getCurrentCardAnswer().toLowerCase()) {
-                    this.addCurrentCardToHistory();
-                    this.loadNextCard();
-                }
-            },
-
-            showCurrentCardHint: function() {
-                this.elements.hint.html(this.getCardSideTemplate(
-                    this.getCurrentCardAnswer()
-                ));
-            },
-
-            addCurrentCardToHistory: function() {
-                this.elements.history.prepend(this.historyRowTemplate({
-                    question: this.getCardSideTemplate(
-                        this.getCurrentCardQuestion()
-                    ),
-                    answer: this.getCardSideTemplate(
-                        this.getCurrentCardAnswer()
-                    )
-                }));
-            },
-
-            playAudio: function(element) {
-                var url = element.attr('audio-url');
-                if (element.hasClass('audio') && url) {
-                    this.data.audio.src = url;
-                    this.data.audio.play();
-                }
-            },
-
-            start: function() {
-                var view = this;
-
-                // initialize data
-                this.data.current = null;
-                this.data.cards = this.model.get('cards');
-
-                // initialize dom elements
-                this.elements.question = this.$el.find('#question');
-                this.elements.answer = this.$el.find('#answer');
-                this.elements.hint = this.$el.find('#hint');
-                this.elements.showHint = this.$el.find('#show-hint');
-                this.elements.history = this.$el.find('#history');
-
-                // load first card
-                this.loadNextCard();
-
-                // bind events
-                this.elements.answer.keyup(function () {
-                    view.answerCurrentCard();
-                });
-                this.elements.showHint.click(function () {
-                    view.showCurrentCardHint();
-                });
-                this.$el.click(function (event) {
-                    view.playAudio($(event.target));
-                });
-            },
-
-            finish: function() {
-                this.elements.question.html(messages.deckLearnFinish);
-                this.elements.answer.val('');
-                this.elements.answer.off('keyup');
-                this.elements.showHint.off('click');
-            }
-        });
-
-        var Router = Backbone.Router.extend({
-            routes: {
-                'deck/list': 'deckList',
-                'deck/learn/:slug(/:direction)': 'deckLearn',
-                '': 'deckList'
-            },
-
-            deckList: function() {
-                var decks = new DeckCollection();
-                var view = new DeckListView({
-                    el: '#content',
-                    collection: decks
-                });
-
-                // set title
-                document.title = messages.deckListMetaTitle
-
-                // render the deck list
-                decks.fetch({
-                    success: function() {
-                        view.render();
-                    }
-                });
-            },
-
-            deckLearn: function(slug, direction) {
-                var frontToBack = (direction == 'back-to-front') ? false : true;
-                var deck = new DeckModel({
-                    id: slug
-                });
-                var view = new DeckLearnView({
-                    el: '#content',
-                    model: deck,
-                    frontToBack: frontToBack
-                });
-
-                // set title
-                document.title = messages.deckLearnMetaTitle.replace('%deck%', slug);
-
-                // render the deck learn environment
-                deck.fetch({
-                    success: function() {
-                        view.render();
-                    }
-                });
-            }
-        });
-        var router = new Router();
-
-        Backbone.history.start();
-    </script>
 {% endblock %}
 
 {% block body %}
     <div id="content" class="container">
     </div>
 
-    <script type="text/template" id="deck-list">
-        <div class="row">
-            <h1>{{ 'deck-list.content.heading'|trans }}</h1>
-            <table class="table">
-                <tbody>
-                    <% decks.forEach(function (deck) { %>
-                        <tr>
-                            <td>
-                                <a href="#/deck/learn/<%= deck.get('slug') %>" class="btn btn-default btn-xs" aria-label="Front to back">
-                                    <span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>
-                                </a>
-                                <a href="#/deck/learn/<%= deck.get('slug') %>/back-to-front"class="btn btn-default btn-xs" aria-label="Back to front">
-                                    <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
-                                </a>
-
-                                <%= deck.get('name') %>
-                            </td>
-                        </tr>
-                    <% }); %>
-                </tbody>
-            </table>
-        </div>
-    </script>
-
-    <script type="text/template" id="deck-learn">
-        <div class="row">
-            <h1><%= deck.get('name') %></h1>
-
-            <div id="question" style="float: left;">{{ 'deck-learn.message.loading'|trans }}</div>
-
-            <input id="answer" type="text" class="form-control" placeholder="{{ 'deck-learn.form.placeholder.answer'|trans }}">
-
-            <button id="show-hint" class="btn btn-default btn-primary">{{ 'deck-learn.action.hint'|trans }}</button>
-            <div id="hint"></div>
-
-            <a href="#/deck/list" class="btn btn-default">{{ 'deck-learn.action.back'|trans }}</a><br>
-
-            <dl id="history" class="dl-horizontal"></dl>
-        </div>
-    </script>
-
-    <script type="text/template" id="card-side">
-        <%= text %>
-
-        <button audio-url="<%= audioUrl %>" class="audio btn btn-default btn-xs">
-            <span class="glyphicon glyphicon glyphicon-volume-up" aria-hidden="true"></span>
-        </button>
-    </script>
-
-    <script type="text/template" id="history-row">
-        <dt><%= question %></dt>
-        <dd><%= answer %></dd>
-    </script>
+    {% include 'MoFlashCardsBundle:Templates:deckList.html.twig' %}
+    {% include 'MoFlashCardsBundle:Templates:deckLearn.html.twig' %}
+    {% include 'MoFlashCardsBundle:Templates:cardSide.html.twig' %}
+    {% include 'MoFlashCardsBundle:Templates:historyRow.html.twig' %}
 {% endblock %}
