@@ -4,3 +4,4 @@ services:
     arguments: [@doctrine_mongodb]
   mofc.api.controller.resource:
     class: Mo\FlashCardsApiBundle\Controller\ResourceController
+    arguments: [@kernel]
