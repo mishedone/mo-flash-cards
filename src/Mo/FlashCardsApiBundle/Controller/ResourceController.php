@@ -24,9 +24,12 @@ class ResourceController
      */
     public function textToSpeechAction($text)
     {
-        $audio = file_get_contents('http://translate.google.com/translate_tts?' . http_build_query(array(
-            'tl' => 'en',
-            'q' => $text
+        $audio = file_get_contents('https://api.voicerss.org/?' . http_build_query(array(
+            'key' => '36b73c895a48485faedd7f6f8de71eb0',
+            'hl' => 'en-gb',
+            'src' => $text,
+            'c' => 'mp3',
+            'f' => '48khz_16bit_stereo'
 	    )));
 
         // build response
