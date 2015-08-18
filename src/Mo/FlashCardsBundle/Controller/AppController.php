@@ -15,6 +15,8 @@ class AppController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('MoFlashCardsBundle::app.html.twig');
+        return $this->render('MoFlashCardsBundle::app.html.twig', array(
+            'locales' => array('bg', 'en')
+        ));
     }
 }

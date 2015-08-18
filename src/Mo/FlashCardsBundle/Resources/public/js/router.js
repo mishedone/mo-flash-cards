@@ -1,4 +1,4 @@
-/*global Backbone, Messages, Router*/
+/*global Backbone, Messages*/
 /*global DeckModel*/
 /*global DeckCollection*/
 /*global DeckListView, DeckLearnView*/
@@ -56,6 +56,3 @@ var Router = (function () {
         }
     });
 }());
-
-var router = new Router();
-Backbone.history.start();

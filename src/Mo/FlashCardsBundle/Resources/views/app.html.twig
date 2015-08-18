@@ -25,13 +25,36 @@
         '@MoFlashCardsBundle/Resources/public/js/collections/deck.js'
         '@MoFlashCardsBundle/Resources/public/js/views/deck-list.js'
         '@MoFlashCardsBundle/Resources/public/js/views/deck-learn.js'
-        '@MoFlashCardsBundle/Resources/public/js/router.js' %}
+        '@MoFlashCardsBundle/Resources/public/js/views/locale-switch.js'
+        '@MoFlashCardsBundle/Resources/public/js/router.js'
+        '@MoFlashCardsBundle/Resources/public/js/app.js' %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
 
 {% block body %}
-    <div id="content" class="container">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="#" class="navbar-brand">Flash Cards</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul id="locale-switch" class="nav navbar-nav navbar-right">
+                    {% for locale in locales %}
+                        <li><a class="locale" href="{{ path('mofc_app', {'_locale': locale}) }}">{{ locale|upper }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div id="content" class="container" style="padding-top: 70px;">
     </div>
 
     {% include 'MoFlashCardsBundle:Templates:deckList.html.twig' %}
