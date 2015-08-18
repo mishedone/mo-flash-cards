@@ -51,6 +51,10 @@ assetic:
             inputs:
                 - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/css/bootstrap.min.css'
             output: "assetic/css/bootstrap.css"
+        bootstrap_js:
+            inputs:
+                - '%kernel.root_dir%/../vendor/twbs/bootstrap/dist/js/bootstrap.min.js'
+            output: "assetic/js/bootstrap.js"
         jquery_js:
             inputs:
                 - '%kernel.root_dir%/../vendor/components/jquery/jquery.min.js'

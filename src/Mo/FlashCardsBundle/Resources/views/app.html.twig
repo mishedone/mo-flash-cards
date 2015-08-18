@@ -19,6 +19,7 @@
         '@jquery_js'
         '@underscore_js'
         '@backbone_js'
+        '@bootstrap_js'
         'bundles/fosjsrouting/js/router.js'
         'js/fos_js_routes.js'
         '@MoFlashCardsBundle/Resources/public/js/models/deck.js'
@@ -33,16 +34,16 @@
 {% endblock %}
 
 {% block body %}
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+                <button aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="#" class="navbar-brand">Flash Cards</a>
+                <a href="{{ path('mofc_app', {'_locale': app.request.locale}) }}" class="navbar-brand">Flash Cards</a>
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul id="locale-switch" class="nav navbar-nav navbar-right">

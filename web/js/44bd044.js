@@ -229,6 +229,7 @@ var LocaleSwitchView = (function () {
         }
     });
 }());
+
 /*global Backbone, Messages*/
 /*global DeckModel*/
 /*global DeckCollection*/
