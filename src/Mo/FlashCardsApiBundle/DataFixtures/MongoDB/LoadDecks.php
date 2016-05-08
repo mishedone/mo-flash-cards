@@ -5,8 +5,8 @@ namespace Mo\FlashCardsBundle\DataFixtures\MongoDB;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Mo\FlashCardsBundle\Document\Deck;
-use Mo\FlashCardsBundle\Document\Card;
+use Mo\FlashCardsApiBundle\Document\Deck;
+use Mo\FlashCardsApiBundle\Document\Card;
 
 class LoadDecks implements FixtureInterface
 {
