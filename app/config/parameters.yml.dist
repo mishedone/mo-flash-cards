@@ -24,5 +24,3 @@ parameters:
     mongo_db:          ~
     mongo_test_server: ~
     mongo_test_db:     ~
-    mongo_prod_server: ~
-    mongo_prod_db:     ~
