@@ -1,0 +1,18 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_mysql
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: symfony
+    database_user: root
+    database_password: null
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    locale: en
+    secret: 89ea99df5a4015a54ec30d7ea6498ebb23f8c06c
+    mongo_server: 'mongodb://localhost:27017'
+    mongo_db: flash-cards
+    mongo_test_server: 'mongodb://localhost:27017'
+    mongo_test_db: flash-cards-test
