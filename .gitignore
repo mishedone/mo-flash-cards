@@ -1,14 +1,28 @@
-/web/bundles/
-/app/bootstrap.php.cache
-/app/cache/*
+# configurations
 /app/config/parameters.yml
-/app/logs/*
-/app/tts/*
-!app/cache/.gitkeep
-!app/logs/.gitkeep
-/app/phpunit.xml
+/phpunit.xml
+/var/*
+
+# cache
+!/var/cache
+/var/cache/*
+!var/cache/.gitkeep
+
+# logs
+!/var/logs
+/var/logs/*
+!var/logs/.gitkeep
+
+# sessions
+!/var/sessions
+/var/sessions/*
+!var/sessions/.gitkeep
+
+# requirements test, vendor and assets
+!var/SymfonyRequirements.php
 /vendor/
-/bin/
-/composer.phar
+/web/bundles/
+
+# custom files
 *.komodoproject
 .vagrant
