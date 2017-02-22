@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
 
-# add repositories
+# update repositories
 add-apt-repository ppa:ondrej/php
 apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
 echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.0.list
-
-# refresh repositories
 apt-get update
 
 # setup apache
@@ -22,9 +20,6 @@ sed -i "s|DocumentRoot /var/www/html|DocumentRoot /var/www/html/web\\
         </Directory>|" /etc/apache2/sites-available/000-default.conf
 a2enmod rewrite
 
-# setup mongo
-apt-get install -y mongodb-org
-
 # setup php
 apt-get install -y php7.0 php7.0-fpm php7.0-xml php7.0-intl php7.0-curl php7.0-mysql php7.0-mongo
 apt-get install -y libapache2-mod-php7.0
@@ -34,10 +29,8 @@ sed -i "s|APACHE_RUN_GROUP=www-data|APACHE_RUN_GROUP=vagrant|" /etc/apache2/envv
 service apache2 restart
 
 # setup composer
+apt-get install -y git unzip
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-# setup unzip
-apt-get install -y unzip
 
 # clean up
 apt-get --purge -y autoremove
@@ -50,3 +43,6 @@ php bin/console cache:clear --env=dev
 php bin/console cache:clear --env=test
 #cp build/parameters.yml app/config/parameters.yml
 #php app/console doctrine:mongodb:fixtures:load
+
+# setup mongo
+apt-get install -y mongodb-org
