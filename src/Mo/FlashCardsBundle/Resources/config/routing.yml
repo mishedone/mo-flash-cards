@@ -1,4 +1,0 @@
-# our single page application
-mofc_app:
-    path:     /{_locale}
-    defaults: { _controller: MoFlashCardsBundle:App:index, _locale: bg }

@@ -1,8 +1,0 @@
-Mo\FlashCardsApiBundle\Document\Card:
-  exclusion_policy: all
-  properties:
-    front:
-      groups: [details]
-    back:
-      groups: [details]
-        

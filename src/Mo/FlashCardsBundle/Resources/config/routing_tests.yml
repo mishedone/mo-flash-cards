@@ -1,4 +1,0 @@
-# test routes
-mofc_jasmine_tests:
-    path:     /tests/jasmine
-    defaults: { _controller: MoFlashCardsBundle:Test:jasmine }
