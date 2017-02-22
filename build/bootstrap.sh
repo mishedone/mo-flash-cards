@@ -36,11 +36,17 @@ service apache2 restart
 # setup composer
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+# setup unzip
+apt-get install -y unzip
+
 # clean up
 apt-get --purge -y autoremove
 
 # setup application
 cd /vagrant
-composer install
+composer install --prefer-dist
+php bin/console cache:clear --env=prod
+php bin/console cache:clear --env=dev
+php bin/console cache:clear --env=test
 #cp build/parameters.yml app/config/parameters.yml
 #php app/console doctrine:mongodb:fixtures:load
