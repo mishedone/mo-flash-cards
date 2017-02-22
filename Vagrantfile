@@ -21,8 +21,8 @@ Vagrant.configure(2) do |config|
         config.vm.synced_folder ".", "/vagrant", type: "smb"
     end
 
-    # warning - use 2048 memory when fresh installing
+    # assign memory
     config.vm.provider "virtualbox" do |vb|
-        vb.memory = "512"
+        vb.memory = "1024"
     end
 end

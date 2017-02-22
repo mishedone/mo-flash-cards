@@ -26,9 +26,9 @@ a2enmod rewrite
 apt-get install -y mongodb-org
 
 # setup php
-apt-get install -y php5 php5-curl php5-cli php5-mongo
-apt-get install -y libapache2-mod-php5
-sed -i "s|display_errors = Off|display_errors = On|" /etc/php5/apache2/php.ini
+apt-get install -y php7.0 php7.0-fpm php7.0-xml php7.0-intl php7.0-curl php7.0-mysql php7.0-mongo
+apt-get install -y libapache2-mod-php7.0
+sed -i "s|display_errors = Off|display_errors = On|" /etc/php7.0/apache2/php.ini
 sed -i "s|APACHE_RUN_USER=www-data|APACHE_RUN_USER=vagrant|" /etc/apache2/envvars
 sed -i "s|APACHE_RUN_GROUP=www-data|APACHE_RUN_GROUP=vagrant|" /etc/apache2/envvars
 service apache2 restart
@@ -42,5 +42,5 @@ apt-get --purge -y autoremove
 # setup application
 cd /vagrant
 composer install
-cp build/parameters.yml app/config/parameters.yml
-php app/console doctrine:mongodb:fixtures:load
+#cp build/parameters.yml app/config/parameters.yml
+#php app/console doctrine:mongodb:fixtures:load
