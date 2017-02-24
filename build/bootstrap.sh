@@ -52,7 +52,7 @@ composer install --prefer-dist
 php bin/console cache:clear --env=prod
 php bin/console cache:clear --env=dev
 php bin/console cache:clear --env=test
-#php app/console doctrine:mongodb:fixtures:load
+php bin/console doctrine:mongodb:fixtures:load
 
 # setup mongo
 apt-get install -y mongodb-org
