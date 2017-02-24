@@ -1,0 +1,10 @@
+MoFlashCards\DeckBundle\Document\Deck:
+  exclusion_policy: all
+  properties:
+    name:
+      groups: [details, list]
+    slug:
+      groups: [details, list]
+    cards:
+      groups: [details]
+        
