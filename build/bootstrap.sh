@@ -47,11 +47,11 @@ fi
 
 # setup application
 cd /vagrant
+cp build/parameters.yml app/config/parameters.yml
 composer install --prefer-dist
 php bin/console cache:clear --env=prod
 php bin/console cache:clear --env=dev
 php bin/console cache:clear --env=test
-cp build/parameters.yml app/config/parameters.yml
 #php app/console doctrine:mongodb:fixtures:load
 
 # setup mongo
