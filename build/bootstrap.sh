@@ -21,7 +21,7 @@ sed -i "s|DocumentRoot /var/www/html|DocumentRoot /var/www/html/web\\
 a2enmod rewrite
 
 # setup php
-apt-get install -y php7.0 php7.0-fpm php7.0-xml php7.0-intl php7.0-curl php7.0-mysql php7.0-mongo
+apt-get install -y php7.0 php7.0-fpm php7.0-mbstring php7.0-zip php7.0-xml php7.0-intl php7.0-curl php7.0-mysql php7.0-mongo
 apt-get install -y libapache2-mod-php7.0
 sed -i "s|display_errors = Off|display_errors = On|" /etc/php7.0/apache2/php.ini
 sed -i "s|APACHE_RUN_USER=www-data|APACHE_RUN_USER=vagrant|" /etc/apache2/envvars
@@ -34,6 +34,16 @@ curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin
 
 # clean up
 apt-get --purge -y autoremove
+
+# setup swap before composer install
+# https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-14-04
+if ! [ -f /swapfile ]; then
+    fallocate -l 2G /swapfile
+    chmod 600 /swapfile
+    mkswap /swapfile
+    swapon /swapfile
+    echo "/swapfile   none    swap    sw    0   0" >> /etc/fstab
+fi
 
 # setup application
 cd /vagrant
