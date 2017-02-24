@@ -19,7 +19,7 @@ swiftmailer:
 doctrine_mongodb:
     connections:
         default:
-            server: "%mongodb_test_server%"
+            server: "%mongo_test_server%"
             options: {}
     default_database: "%mongo_test_db%"
     document_managers:

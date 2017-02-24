@@ -65,7 +65,7 @@ doctrine:
 doctrine_mongodb:
     connections:
         default:
-            server: "%mongodb_server%"
+            server: "%mongo_server%"
             options: {}
     default_database: "%mongo_db%"
     document_managers:
