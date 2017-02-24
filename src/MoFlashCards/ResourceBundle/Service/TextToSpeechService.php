@@ -23,13 +23,13 @@ class TextToSpeechService
      */
     public function getAudio($text)
     {
-        return file_get_contents('https://api.voicerss.org/?' . http_build_query([
+        return file_get_contents('https://api.voicerss.org/?' . http_build_query(array(
             'key' => $this->apiKey,
             'hl' => 'en-gb',
             'src' => $text,
             'c' => 'mp3',
             'f' => '48khz_16bit_stereo'
-        ]));
+        )));
     }
 }
     
