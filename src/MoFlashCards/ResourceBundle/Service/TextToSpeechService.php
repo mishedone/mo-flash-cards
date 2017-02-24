@@ -33,6 +33,7 @@ class TextToSpeechService
      */
     public function get($text)
     {
+        $text = mb_strtolower($text, 'UTF-8');
         $textToSpeech = $this->mongo->getRepository('ResourceBundle:TextToSpeech')->findOneByText($text);
         
         // we do not have the audio cached so fetch it

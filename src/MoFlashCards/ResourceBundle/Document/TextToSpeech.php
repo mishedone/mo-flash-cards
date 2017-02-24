@@ -31,7 +31,7 @@ class TextToSpeech
      */
     public function __construct($text, $audio)
     {
-        $this->text = mb_strtolower($text, 'UTF-8');
+        $this->text = $text;
         $this->audio = $audio;
     }
     
