@@ -4,6 +4,10 @@ parameters:
     database_name: symfony
     database_user: root
     database_password: null
+    mongo_server: "mongodb://localhost:27017"
+    mongo_db: flash-cards
+    mongo_test_server: "mongodb://localhost:27017"
+    mongo_test_db: flash-cards-test
     mailer_transport: smtp
     mailer_host: 127.0.0.1
     mailer_user: null
