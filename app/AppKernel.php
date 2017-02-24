@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             
             // application bundles
             new AppBundle\AppBundle(),
+            new MoFlashCards\DeckBundle\DeckBundle(),
             new MoFlashCards\ResourceBundle\ResourceBundle()
         ];
 
