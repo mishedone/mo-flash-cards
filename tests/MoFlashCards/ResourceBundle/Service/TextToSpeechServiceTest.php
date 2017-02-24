@@ -11,7 +11,7 @@ class TextToSpeechServiceTest extends KernelTestCase
     {
         static::bootKernel();
         $service = static::$kernel->getContainer()->get('resource.text.to.speech');
-        $audio = $service->getAudio('hello');
+        $audio = $service->get('hello')->getAudio();
         
         // check audio mime type
         $fileInfo = finfo_open();

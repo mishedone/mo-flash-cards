@@ -15,7 +15,10 @@ class TextToSpeechController extends Controller
      */
     public function getAudioAction($text)
     {
-        $audio = $this->get('resource.text.to.speech')->getAudio($text);
+        $audio = $this->get('resource.text.to.speech')->get($text)->getAudio();
+        
+        // save data changes
+        $this->get('doctrine_mongodb')->getManager()->flush();
 
         // build response
         $response = new Response();
