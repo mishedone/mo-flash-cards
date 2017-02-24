@@ -3,12 +3,14 @@
 namespace Tests\MoFlashCards\ResourceBundle\Service;
 
 use MoFlashCards\ResourceBundle\Service\TextToSpeechService;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class TextToSpeechServiceTest extends \PHPUnit_Framework_TestCase
+class TextToSpeechServiceTest extends KernelTestCase
 {
     public function testGetAudio()
     {
-        $service = new TextToSpeechService();
+        static::bootKernel();
+        $service = static::$kernel->getContainer()->get('resource.text.to.speech');
         $audio = $service->getAudio('hello');
         
         // check audio mime type

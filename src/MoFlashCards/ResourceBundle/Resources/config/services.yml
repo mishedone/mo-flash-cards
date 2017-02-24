@@ -1,3 +1,4 @@
 services:
     resource.text.to.speech:
         class: MoFlashCards\ResourceBundle\Service\TextToSpeechService
+        arguments: ["%text_to_speech_key%"]
