@@ -10,10 +10,10 @@ parameters:
     # You should uncomment this if you want use pdo_sqlite
     # database_path: "%kernel.root_dir%/data.db3"
     
-    mongo_server:       "mongodb://localhost:27017"
-    mongo_db:           flash-cards
-    mongo_test_server:  "mongodb://localhost:27017"
-    mongo_test_db:      flash-cards-test
+    mongo_server:       "mongodb://127.0.0.1:27017"
+    mongo_db:           db
+    mongo_test_server:  "mongodb://127.0.0.1:27017"
+    mongo_test_db:      testdb
 
     mailer_transport:   smtp
     mailer_host:        127.0.0.1
