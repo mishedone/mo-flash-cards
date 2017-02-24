@@ -38,13 +38,13 @@ class TextToSpeechService
         
         // we do not have the audio cached so fetch it
         if (!$textToSpeech) {
-            $audio = file_get_contents('https://api.voicerss.org/?' . http_build_query(array(
+            $audio = file_get_contents('https://api.voicerss.org/?' . http_build_query([
                 'key' => $this->apiKey,
                 'hl' => 'en-gb',
                 'src' => $text,
                 'c' => 'mp3',
                 'f' => '48khz_16bit_stereo'
-            )));
+            ]));
             
             // create new text to speech and cache it for next requests
             $textToSpeech = new TextToSpeech($text, $audio);

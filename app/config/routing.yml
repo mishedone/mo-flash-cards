@@ -2,5 +2,8 @@ app:
     resource: "@AppBundle/Controller/"
     type:     annotation
     
+decks:
+    resource: "@DeckBundle/Resources/config/routing.yml"
+
 resources:
     resource: "@ResourceBundle/Resources/config/routing.yml"

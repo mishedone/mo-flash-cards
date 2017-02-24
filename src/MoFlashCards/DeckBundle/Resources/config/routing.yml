@@ -1,0 +1,4 @@
+deck_get_list:
+    path: /api/deck/list
+    defaults: { _controller: DeckBundle:Deck:list }
+    methods: [GET]
