@@ -1,0 +1,3 @@
+services:
+    resource.text.to.speech:
+        class: MoFlashCards\ResourceBundle\Service\TextToSpeechService
