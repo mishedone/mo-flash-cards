@@ -2,7 +2,6 @@
 
 namespace Tests\MoFlashCards\ResourceBundle\Service;
 
-use MoFlashCards\ResourceBundle\Service\TextToSpeechService;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class TextToSpeechServiceTest extends KernelTestCase
