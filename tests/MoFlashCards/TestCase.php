@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests;
+namespace Tests\MoFlashCards;
 
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -9,9 +9,9 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Provides useful methods for testing the api.
+ * Provides useful methods for our test suites.
  */
-abstract class ApiTestCase extends WebTestCase
+abstract class TestCase extends WebTestCase
 {
     /**
      * Checks whether a response has correct status code and is
@@ -36,10 +36,10 @@ abstract class ApiTestCase extends WebTestCase
      *
      * @param Client $client
      * @param string $name
-     * @param array  $parameters Default: array().
+     * @param array  $parameters Default: [].
      * @return string
      */
-    protected function generateUrl(Client $client, $name, $parameters = array())
+    protected function generateUrl(Client $client, $name, $parameters = [])
     {
         return $client->getContainer()->get('router')->generate($name, $parameters);
     }
@@ -47,17 +47,20 @@ abstract class ApiTestCase extends WebTestCase
     /**
      * Resets the state of the database.
      */
-    static protected function resetDatabase()
+    protected function resetDatabase()
     {
-        static::bootKernel();
+        if (!static::$kernel) {
+            static::bootKernel();
+        }
         
-        /*$console = new Application(static::$kernel);
+        // drop the database and load fixtures
+        $console = new Application(static::$kernel);
         $console->setAutoExit(false);
-        $console->run(new ArrayInput(array(
+        $console->run(new ArrayInput([
             'command' => 'doctrine:mongodb:fixtures:load',
             '--env' => 'test',
-            '--fixtures' => __DIR__ . '/../Tests/DataFixtures',
+            '--fixtures' => __DIR__ . '/DataFixtures',
             '--quiet' => null
-        )));*/
+        ]));
     }
 }

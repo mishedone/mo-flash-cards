@@ -2,15 +2,18 @@
 
 namespace Tests\MoFlashCards\ResourceBundle\Service;
 
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Tests\MoFlashCards\TestCase;
 
-class TextToSpeechServiceTest extends KernelTestCase
+class TextToSpeechServiceTest extends TestCase
 {
     public function testGetAudio()
     {
         static::bootKernel();
         $service = static::$kernel->getContainer()->get('resource.text.to.speech');
         $audio = $service->get('hello')->getAudio();
+        
+        // clean up the database - text to speech caches things
+        $this->resetDatabase();
         
         // check audio mime type
         $fileInfo = finfo_open();

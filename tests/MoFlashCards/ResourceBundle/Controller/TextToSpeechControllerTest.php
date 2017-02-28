@@ -2,15 +2,18 @@
 
 namespace Tests\MoFlashCards\ResourceBundle\Controller;
 
-use Tests\ApiTestCase;
+use Tests\MoFlashCards\TestCase;
 
-class TextToSpeechControllerTest extends ApiTestCase
+class TextToSpeechControllerTest extends TestCase
 {
     public function testGetAudio()
     {
         $client = static::createClient();
-        $url = $this->generateUrl($client, 'resource_text_to_speech_get_audio', array('text' => 'hello'));
+        $url = $this->generateUrl($client, 'resource_text_to_speech_get_audio', ['text' => 'hello']);
         $client->request('GET', $url);
+        
+        // clean up the database
+        $this->resetDatabase();
 
         // check response headers
         $response = $client->getResponse();
