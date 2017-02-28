@@ -21,7 +21,8 @@ class AppKernel extends Kernel
             // application bundles
             new AppBundle\AppBundle(),
             new MoFlashCards\DeckBundle\DeckBundle(),
-            new MoFlashCards\ResourceBundle\ResourceBundle()
+            new MoFlashCards\ResourceBundle\ResourceBundle(),
+            new MoFlashCards\UtilityBundle\UtilityBundle()
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
