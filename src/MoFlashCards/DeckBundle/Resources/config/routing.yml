@@ -1,10 +1,10 @@
-deck_get_list:
-    path: /api/deck/list
+deck_list:
+    path: /api/decks
     defaults: { _controller: DeckBundle:Deck:list }
     methods: [GET]
     
 deck_get:
-    path: /api/deck/{slug}
+    path: /api/decks/{slug}
     defaults: { _controller: DeckBundle:Deck:get }
     methods: [GET]
     
