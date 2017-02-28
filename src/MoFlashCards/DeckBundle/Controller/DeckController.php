@@ -2,6 +2,7 @@
 
 namespace MoFlashCards\DeckBundle\Controller;
 
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -10,6 +11,13 @@ class DeckController extends Controller
 {
     /**
      * Lists all available decks.
+     *
+     * @ApiDoc(
+     *   section="Deck",
+     *   statusCodes={
+     *     200="On success"
+     *   }
+     * )
      *
      * @return Response
      */
@@ -26,6 +34,22 @@ class DeckController extends Controller
     /**
      * Loads a certain deck by it's slug.
      *
+     * @ApiDoc(
+     *   section="Deck",
+     *   requirements={
+     *     {
+     *       "name"="slug",
+     *       "dataType"="string",
+     *       "description"="Deck identifier"
+     *     }
+     *   },
+     *   statusCodes={
+     *     200="On success",
+     *     404="When no deck is found"
+     *   }
+     * )
+     * 
+     * @throws NotFoundHttpException When deck does not exist.
      * @param string $slug
      * @return Response
      */
