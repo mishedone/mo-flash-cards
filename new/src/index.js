@@ -15,6 +15,10 @@ const decks = [
     {
         name: 'Crazy Department',
         slug: 'crazy-department'
+    },
+    {
+        name: 'John',
+        sluh: 'john'
     }
 ];
 
@@ -38,7 +42,7 @@ class App extends React.Component {
 class DeckList extends React.Component {
     render() {
         const decks = this.props.decks.map((deck) => (
-            <tr>
+            <tr id={deck.slug}>
                 <td>
                     <a href="#/deck/learn/<%= deck.get('slug') %>" class="btn btn-default btn-xs" aria-label="Front to back">
                         <span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>

@@ -9,5 +9,12 @@ apt-get update
 # setup node js
 apt-get install -y nodejs
 
+# lsyncd - file change sync daemon
+apt-get install -y lsyncd
+
+# copy the project out of the mount to enable npm reloading
+rsync -a /vagrant/ /home/vagrant/app/ --exclude=.vagrant
+
 # insall dependencies
-# TODO
+cd /home/vagrant/app
+npm install
