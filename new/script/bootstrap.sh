@@ -8,3 +8,6 @@ apt-get update
 
 # setup node js
 apt-get install -y nodejs
+
+# insall dependencies
+# TODO
