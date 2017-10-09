@@ -25,4 +25,5 @@
 
 # custom files
 *.komodoproject
+.idea
 .vagrant
