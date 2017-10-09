@@ -1,6 +1,4 @@
-# run file sync daemon
-lsyncd -rsync /vagrant /home/vagrant/app
+#!/usr/bin/env bash
 
-# run web server
-cd /home/vagrant/app
-npm start
+# run file sync daemon
+# watch -n 0.5 ./sync.sh

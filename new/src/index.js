@@ -9,16 +9,8 @@ const decks = [
         slug: 'marketing'
     },
     {
-        name: 'Development',
+        name: 'Developers',
         slug: 'development'
-    },
-    {
-        name: 'Crazy Department',
-        slug: 'crazy-department'
-    },
-    {
-        name: 'John',
-        sluh: 'john'
     }
 ];
 
@@ -46,9 +38,11 @@ class DeckList extends React.Component {
                 <td>
                     <a href="#/deck/learn/<%= deck.get('slug') %>" class="btn btn-default btn-xs" aria-label="Front to back">
                         <span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>
+                        Front
                     </a>
                     <a href="#/deck/learn/<%= deck.get('slug') %>/back-to-front"class="btn btn-default btn-xs" aria-label="Back to front">
                         <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
+                        Back
                     </a>
 
                     {deck.name}
