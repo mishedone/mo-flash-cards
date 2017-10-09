@@ -9,9 +9,12 @@ apt-get update
 # setup node js
 apt-get install -y nodejs
 
-# copy the project out of the mount to enable npm reloading
-rsync -a /vagrant/ /home/vagrant/app/ --exclude=.vagrant --exclude=node_modules
-
 # install dependencies
-cd /home/vagrant/app
+cd /vagrant
 npm install
+
+# install and configure supervisor
+apt-get install -y supervisor
+if ! [ -d /home/vagrant/logs ]; then
+    mkdir /home/vagrant/logs
+fi

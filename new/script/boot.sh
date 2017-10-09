@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
 
-# run file sync daemon
-# watch -n 0.5 ./sync.sh
+# remove supervisor logs from previous sessions
+rm /home/vagrant/logs/*
+
+# reload supervisor daemons
+cp -a /vagrant/script/supervisor/. /etc/supervisor/conf.d/
+service supervisor restart
