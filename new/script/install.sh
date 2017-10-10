@@ -17,4 +17,5 @@ npm install
 apt-get install -y supervisor
 if ! [ -d /home/vagrant/logs ]; then
     mkdir /home/vagrant/logs
+    touch /home/vagrant/logs/tmp
 fi
