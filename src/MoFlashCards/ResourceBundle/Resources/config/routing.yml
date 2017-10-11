@@ -1,4 +1,0 @@
-resource_text_to_speech_get_audio:
-    path:     /api/text-to-speech/{text}
-    defaults: { _controller: ResourceBundle:TextToSpeech:getAudio }
-    methods:  [GET]

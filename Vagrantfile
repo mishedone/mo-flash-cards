@@ -4,8 +4,9 @@
 # you're doing.
 Vagrant.configure(2) do |config|
     config.vm.box = "ubuntu/trusty64"
-    config.vm.network :forwarded_port, guest: 80, host: 9110
-    config.vm.provision :shell, path: "build/bootstrap.sh"
+    config.vm.network :forwarded_port, guest: 3000, host: 9115
+    config.vm.provision :shell, path: "env/install.sh"
+    config.vm.provision :shell, path: "env/boot.sh", run: "always"
     
     # a private dhcp network is required for nfs to work (on windows hosts, at least)
     config.vm.network "private_network", type: "dhcp"

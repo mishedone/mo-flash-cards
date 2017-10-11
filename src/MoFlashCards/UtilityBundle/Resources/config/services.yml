@@ -1,4 +1,0 @@
-services:
-    utility.response.factory:
-        class: MoFlashCards\UtilityBundle\Service\ResponseFactoryService
-        arguments: ["@jms_serializer"]

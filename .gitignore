@@ -1,29 +1,24 @@
-# configurations
-/app/config/parameters.yml
-/phpunit.xml
-/var/*
+# See https://help.github.com/ignore-files/ for more about ignoring files.
 
-# cache
-!/var/cache
-/var/cache/*
-!var/cache/.gitkeep
+# dependencies
+/node_modules
 
-# logs
-!/var/logs
-/var/logs/*
-!var/logs/.gitkeep
+# testing
+/coverage
 
-# sessions
-!/var/sessions
-/var/sessions/*
-!var/sessions/.gitkeep
+# production
+/build
 
-# requirements test, vendor and assets
-!var/SymfonyRequirements.php
-/vendor/
-/web/bundles/
-
-# custom files
-*.komodoproject
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 .idea
 .vagrant
+*.komodoproject
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

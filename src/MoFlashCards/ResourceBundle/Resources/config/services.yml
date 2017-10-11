@@ -1,4 +1,0 @@
-services:
-    resource.text.to.speech:
-        class: MoFlashCards\ResourceBundle\Service\TextToSpeechService
-        arguments: ["@doctrine_mongodb", "%text_to_speech_key%"]
