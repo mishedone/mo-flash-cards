@@ -4,5 +4,5 @@
 rm /home/vagrant/logs/*
 
 # reload supervisor daemons
-cp -a /vagrant/script/supervisor/. /etc/supervisor/conf.d/
+cp -a /vagrant/env/supervisor/. /etc/supervisor/conf.d/
 service supervisor restart
