@@ -14,16 +14,15 @@ that can ease the process even further.
 
 ### Current progress
 
-There are not many things implemented so far but I've laid down the foundations - a symfony
-application containing a backend api bundle using MongoDB as data storage and a frontend
-bundle that serves a single-page application built upon backbone.js.
+There are not many things implemented so far but I've laid down the foundations - the current project
+is a single-page application built with React and there is also an API layer that lives in
+[another repository](https://github.com/mishedone/mo-flash-cards-api) and feeds it with data.
 
-I am looking forward to upgrading symfony to the latest available version (3.2 at the moment of writing),
-reorganizing the bundles in a better way by splitting the api into many self-contained small bundles and
-rewritting the frontend with angular (I've already gathered experience with backbone.js in my mo-lottery
-project so it is time to learn something else).
+I am looking forward to polishing the application frontend with Bootstrap 4 and adding some basic
+features like user management (register, login, reset password, etc.) and deck management so
+the project becomes really useful and ready for deployment.
 
-### Possible features
+### Feature ideas
 
 I am writing down a lot of ideas in my private Trello board related to this project. Some of them are:
 
