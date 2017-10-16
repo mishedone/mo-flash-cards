@@ -1,0 +1,14 @@
+<script type="text/template" id="deck-learn">
+    <h1><%= deck.get('name') %></h1>
+
+    <div id="question" style="float: left;">{{ 'deck-learn.message.loading'|trans }}</div>
+
+    <input id="answer" type="text" class="form-control" placeholder="{{ 'deck-learn.form.placeholder.answer'|trans }}">
+
+    <button id="show-hint" class="btn btn-default btn-primary">{{ 'deck-learn.action.hint'|trans }}</button>
+    <div id="hint"></div>
+
+    <a href="#/deck/list" class="btn btn-default">{{ 'deck-learn.action.back'|trans }}</a><br>
+
+    <dl id="history" class="dl-horizontal"></dl>
+</script>
