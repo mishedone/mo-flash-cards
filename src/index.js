@@ -19,12 +19,12 @@ class App extends React.Component {
         return (
             <div>
                 <nav className="navbar navbar-dark bg-dark">
-                    <a className="navbar-brand" href="/">Flash Cards</a>
+                    <div className="container-fluid text-center">
+                        <a className="navbar-brand" href="/">Flash Cards</a>
+                    </div>
                 </nav>
                 <div className="container-fluid">
-                    <div className="row">
-                        <DeckList decks={decks} />
-                    </div>
+                    <DeckList decks={decks} />
                 </div>
             </div>
         );
@@ -34,29 +34,22 @@ class App extends React.Component {
 class DeckList extends React.Component {
     render() {
         const decks = this.props.decks.map((deck) => (
-            <tr id={deck.slug}>
-                <td>
-                    <a href="#/deck/learn/<%= deck.get('slug') %>" class="btn btn-default btn-xs" aria-label="Front to back">
-                        <span class="glyphicon glyphicon-step-forward" aria-hidden="true"></span>
-                        Front
-                    </a>
-                    <a href="#/deck/learn/<%= deck.get('slug') %>/back-to-front"class="btn btn-default btn-xs" aria-label="Back to front">
-                        <span class="glyphicon glyphicon-step-backward" aria-hidden="true"></span>
-                        Back
-                    </a>
-
-                    {deck.name}
-                </td>
-            </tr>
+            <div id={deck.slug} className="col-2">
+                <div className="card">
+                    <div className="card-body text-center">
+                        <h4 className="card-title">{deck.name}</h4>
+                        <a href="#" role="button" className="btn btn-success btn-sm">Front</a>
+                        <a href="#" role="button" className="btn btn-dark btn-sm ml-1">Back</a>
+                    </div>
+                </div>
+            </div>
         ));
         return (
-            <div>
-                <h1>Choose your deck</h1>
-                <table className="table">
-                    <tbody>
-                        {decks}
-                    </tbody>
-                </table>
+            <div className="row">
+                <div className="col-12 text-center">
+                    <h1 className="h2">Choose your deck</h1>
+                </div>
+                {decks}
             </div>
         );
     }
