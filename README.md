@@ -15,7 +15,7 @@ that can ease the process even further.
 ### Current progress
 
 There are not many things implemented so far but I've laid down the foundations - the current project
-is a single-page application built with React and there is also an API layer that lives in
+is a single-page application built with Vue.js and there is also an API layer that lives in
 [another repository](https://github.com/mishedone/mo-flash-cards-api) and feeds it with data.
 
 I am looking forward to polishing the application frontend with Bootstrap 4 and adding some basic
