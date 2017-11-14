@@ -2,9 +2,9 @@
     <div id="app">
         <nav class="navbar navbar-dark bg-dark mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand w-100 text-center" href="/">
+                <router-link :to="{ name: 'decks' }" class="navbar-brand w-100 text-center">
                     Flash Cards
-                </a>
+                </router-link>
             </div>
         </nav>
         <div class="container-fluid">

@@ -10,9 +10,10 @@
                 <div class="card-body text-center">
                     <h4 class="card-title">{{ deck.name }}</h4>
                    
-                    <a href="#" role="button" class="btn btn-success btn-sm">
+                    <router-link :to="{ name: 'learn', params: { deckSlug: deck.slug }}"
+                                 role="button" class="btn btn-success btn-sm">
                         Front
-                    </a>
+                    </router-link>
                         
                     <a href="#" role="button" class="btn btn-dark btn-sm ml-1">
                         Back
