@@ -9,5 +9,6 @@ export default new Router({
         path: '/',
         name: 'Decks',
         component: Decks
-    }]
+    }],
+    mode: 'history'
 })
