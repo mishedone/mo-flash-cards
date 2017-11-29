@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div class="row justify-content-center">
         <div class="col-12 text-center mb-3">
             <h1 class="h2">Choose your deck</h1>
         </div>
@@ -15,9 +15,10 @@
                         Front
                     </router-link>
                         
-                    <a href="#" role="button" class="btn btn-dark btn-sm ml-1">
+                    <router-link :to="{ name: 'learn', params: { deckSlug: deck.slug, direction: 'back' }}"
+                                 role="button" class="btn btn-dark btn-sm ml-1">
                         Back
-                    </a>
+                    </router-link>
                 </div>
             </div>
         </div>

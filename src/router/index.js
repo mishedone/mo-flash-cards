@@ -11,7 +11,7 @@ export default new Router({
         name: 'decks',
         component: Decks
     }, {
-        path: '/learn/:deckSlug',
+        path: '/learn/:deckSlug/:direction?',
         name: 'learn',
         component: Learn
     }],

@@ -1,10 +1,27 @@
 <template>
-    <div class="row">
-        <div class="col-12 text-center mb-3">
-            <h1 class="h2">Learning {{ deck.name }}</h1>
-        </div>
-
+    <div class="row justify-content-center">
         <div class="col-12">
+            <h1 class="h2 text-center mb-3">Learning {{ deck.name }}</h1>
+
+            <div class="row justify-content-center">
+                <div class="col-12 col-sm-6 col-md-4 mb-3">
+                    <div class="card h-100 text-white bg-success">
+                        <div class="card-body d-flex align-items-center justify-content-center">
+                            a
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="col-12 col-sm-6 col-md-4 mb-3">
+                    <div class="card text-white bg-dark">
+                        <div class="card-body">
+                            <input type="text" class="form-control"
+                                   placeholder="Type in translation" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <router-link :to="{ name: 'decks' }" role="button"
                          class="btn btn-primary w-100">
                 Back to Decks
