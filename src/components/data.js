@@ -6,6 +6,10 @@ const decks = [
             {
                 front: 'John',
                 back: 'Doe'
+            },
+            {
+                front: 'Merry',
+                back: 'Poppins'
             }
         ]
     },

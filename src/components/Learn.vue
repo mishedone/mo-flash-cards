@@ -7,7 +7,7 @@
                 <div class="col-12 col-sm-6 col-md-4 mb-3">
                     <div class="card h-100 text-white bg-success">
                         <div class="card-body d-flex align-items-center justify-content-center">
-                            a
+                            {{ question }}
                         </div>
                     </div>
                 </div>
@@ -15,7 +15,7 @@
                 <div class="col-12 col-sm-6 col-md-4 mb-3">
                     <div class="card text-white bg-dark">
                         <div class="card-body">
-                            <input type="text" class="form-control"
+                            <input type="text" class="form-control" v-model="guess"
                                    placeholder="Type in translation" />
                         </div>
                     </div>
@@ -36,8 +36,33 @@
     export default {
         name: 'Learn',
         data () {
+            const deck = decks.find((deck) => deck.slug === this.$route.params.deckSlug)
+
             return {
-                deck: decks.find((deck) => deck.slug === this.$route.params.deckSlug)
+                deck: deck,
+                cards: deck.cards.slice(),
+                guess: ''
+            }
+        },
+        watch: {
+            guess () {
+                this.checkGuess()
+            }
+        },
+        computed: {
+            question () {
+                return this.cards[0].front
+            },
+            answer () {
+                return this.cards[0].back
+            }
+        },
+        methods: {
+            checkGuess () {
+                if (this.answer.toLowerCase() === this.guess.toLowerCase()) {
+                    this.cards.splice(0, 1)
+                    this.guess = ''
+                }
             }
         }
     }
