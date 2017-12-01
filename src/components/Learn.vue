@@ -15,8 +15,17 @@
                 <div class="col-12 col-sm-6 col-md-4 mb-3">
                     <div class="card text-white bg-dark">
                         <div class="card-body">
-                            <input type="text" class="form-control" v-model="guess"
-                                   placeholder="Type in translation" />
+                            <b-input-group id="show-hint">
+                                <b-form-input type="text" v-model="guess"
+                                              placeholder="Type in translation"></b-form-input>
+                                <b-input-group-button>
+                                    <b-button @click="hint = true">?</b-button>
+                                </b-input-group-button>
+                            </b-input-group>
+
+                            <b-popover :show.sync="hint" target="show-hint" placement="bottom">
+                                {{ answer }}
+                            </b-popover>
                         </div>
                     </div>
                 </div>
@@ -41,7 +50,8 @@
             return {
                 deck: deck,
                 cards: deck.cards.slice(),
-                guess: ''
+                guess: '',
+                hint: false
             }
         },
         watch: {
@@ -62,6 +72,7 @@
                 if (this.answer.toLowerCase() === this.guess.toLowerCase()) {
                     this.cards.splice(0, 1)
                     this.guess = ''
+                    this.hint = false
                 }
             }
         }
