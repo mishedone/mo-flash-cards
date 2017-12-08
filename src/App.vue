@@ -20,6 +20,20 @@
 </script>
 
 <style>
+    /* fill in the missing media based width classes */
+    @media (min-width: 576px) {
+        .w-sm-50 {
+            width: 50% !important;
+        }
+    }
+    
+    @media (min-width: 768px) {
+        .w-md-25 {
+            width: 25% !important;
+        }
+    }
+
+    /* center bottom popove arrow */
     .popover.bs-popover-bottom .arrow::before,
     .popover.bs-popover-bottom .arrow::after {
         margin-left: -50% !important;

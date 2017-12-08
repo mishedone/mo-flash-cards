@@ -31,7 +31,17 @@
                     </div>
                 </div>
             </div>
-
+        </div>
+        
+        <div class="col-12 align-content-stretch flex-wrap">
+            <dl class="float-left w-100 w-sm-50 w-md-25 pr-3"
+                v-for="qa in answered" :key="qa.question">
+                <dt>{{ qa.question }}</dt>
+                <dd>{{ qa.answer }}</dd>
+            </dl>
+        </div>
+        
+        <div class="col-12">
             <router-link :to="{ name: 'decks' }" role="button"
                          class="btn btn-primary w-100">
                 Back to Decks
@@ -52,7 +62,8 @@
                 deck: deck,
                 cards: deck.cards.slice(),
                 guess: '',
-                hint: false
+                hint: false,
+                answered: []
             }
         },
         watch: {
@@ -71,6 +82,10 @@
         methods: {
             checkGuess () {
                 if (this.answer.toLowerCase() === this.guess.toLowerCase()) {
+                    this.answered.unshift({
+                        question: this.question,
+                        answer: this.answer
+                    })
                     this.cards.splice(0, 1)
                     this.guess = ''
                     this.hint = false
