@@ -2,8 +2,12 @@
     <div class="row justify-content-center">
         <div class="col-12">
             <h1 class="h2 text-center mb-3">Learning {{ deck.name }}</h1>
+            
+            <h2 v-if="done" class="h4 text-center mb-3">
+                Congratulations! You've answered all the cards.
+            </h2>
 
-            <div class="row justify-content-center">
+            <div v-else class="row justify-content-center">
                 <div class="col-12 col-sm-6 col-md-4 mb-3">
                     <div class="card h-100 text-white bg-success">
                         <div class="card-body d-flex align-items-center justify-content-center">
@@ -63,7 +67,8 @@
                 cards: deck.cards.slice(),
                 guess: '',
                 hint: false,
-                answered: []
+                answered: [],
+                done: false
             }
         },
         watch: {
@@ -89,6 +94,9 @@
                     this.cards.splice(0, 1)
                     this.guess = ''
                     this.hint = false
+                    if (this.cards.length === 0) {
+                        this.done = true
+                    }
                 }
             },
             showHint () {
