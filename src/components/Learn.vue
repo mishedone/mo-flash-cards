@@ -16,14 +16,15 @@
                     <div class="card text-white bg-dark">
                         <div class="card-body">
                             <b-input-group id="show-hint">
-                                <b-form-input type="text" v-model="guess"
+                                <b-form-input type="text" ref="guessInput" v-model="guess"
                                               placeholder="Type in translation"></b-form-input>
                                 <b-input-group-button>
-                                    <b-button @click="hint = true">?</b-button>
+                                    <b-button @click="showHint">?</b-button>
                                 </b-input-group-button>
                             </b-input-group>
 
-                            <b-popover :show.sync="hint" target="show-hint" placement="bottom">
+                            <b-popover :show.sync="hint" target="show-hint" placement="bottom"
+                                       triggers="" no-fade="true">
                                 {{ answer }}
                             </b-popover>
                         </div>
@@ -74,6 +75,10 @@
                     this.guess = ''
                     this.hint = false
                 }
+            },
+            showHint () {
+                this.hint = true
+                this.$refs.guessInput.$el.focus()
             }
         }
     }

@@ -18,3 +18,10 @@
         name: 'app'
     }
 </script>
+
+<style>
+    .popover.bs-popover-bottom .arrow::before,
+    .popover.bs-popover-bottom .arrow::after {
+        margin-left: -50% !important;
+    }
+</style>
