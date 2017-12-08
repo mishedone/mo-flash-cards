@@ -6,6 +6,10 @@
             <h2 v-if="done" class="h4 text-center mb-3">
                 Congratulations! You've answered all the cards.
             </h2>
+            
+            <h2 v-else-if="!cards.length" class="h4 text-center mb-3">
+                There are now cards in this deck...
+            </h2>
 
             <div v-else class="row justify-content-center">
                 <div class="col-12 col-sm-6 col-md-4 mb-3">
