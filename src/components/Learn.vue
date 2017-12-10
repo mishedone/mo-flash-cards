@@ -13,7 +13,7 @@
 
             <div v-else class="row justify-content-center">
                 <div class="col-12 col-sm-6 col-md-4 mb-3">
-                    <div class="card h-100 text-white bg-success">
+                    <div class="card h-100 text-white" :class="[questionClass]">
                         <div class="card-body d-flex align-items-center justify-content-center">
                             {{ question }}
                         </div>
@@ -21,18 +21,18 @@
                 </div>
             
                 <div class="col-12 col-sm-6 col-md-4 mb-3">
-                    <div class="card text-white bg-dark">
+                    <div class="card text-white" :class="[answerClass]">
                         <div class="card-body">
                             <b-input-group id="show-hint">
                                 <b-form-input type="text" ref="guessInput" v-model="guess"
                                               placeholder="Type in translation"></b-form-input>
                                 <b-input-group-button>
-                                    <b-button @click="showHint">?</b-button>
+                                    <b-button @click="showHint" variant="light">?</b-button>
                                 </b-input-group-button>
                             </b-input-group>
 
                             <b-popover :show.sync="hint" target="show-hint" placement="bottom"
-                                       triggers="" no-fade="true">
+                                       triggers="" :no-fade="true">
                                 {{ answer }}
                             </b-popover>
                         </div>
@@ -65,10 +65,15 @@
         name: 'Learn',
         data () {
             const deck = decks.find((deck) => deck.slug === this.$route.params.deckSlug)
+            const forward = this.$route.params.direction !== 'back'
 
             return {
                 deck: deck,
                 cards: deck.cards.slice(),
+                questionProp: forward ? 'front' : 'back',
+                questionClass: forward ? 'bg-success' : 'bg-dark',
+                answerProp: forward ? 'back' : 'front',
+                answerClass: forward ? 'bg-dark' : 'bg-success',
                 guess: '',
                 hint: false,
                 answered: [],
@@ -82,15 +87,15 @@
         },
         computed: {
             question () {
-                return this.cards[0].front
+                return this.cards[0][this.questionProp]
             },
             answer () {
-                return this.cards[0].back
+                return this.cards[0][this.answerProp]
             }
         },
         methods: {
             checkGuess () {
-                if (this.answer.toLowerCase() === this.guess.toLowerCase()) {
+                if (this.cards.length && this.answer.toLowerCase() === this.guess.toLowerCase()) {
                     this.answered.unshift({
                         question: this.question,
                         answer: this.answer
