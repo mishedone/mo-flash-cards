@@ -26,6 +26,7 @@
 </template>
 
 <script>
+    import axios from 'axios'
     import decks from './data'
 
     export default {
@@ -34,6 +35,12 @@
             return {
                 decks: decks
             }
+        },
+        created () {
+            axios.get('http://127.0.0.1:9101/api/decks')
+                .then(response => {
+                    this.decks = response.data
+                })
         }
     }
 </script>
