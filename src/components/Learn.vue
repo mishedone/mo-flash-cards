@@ -49,7 +49,7 @@
             </dl>
         </div>
         
-        <div class="col-12">
+        <div class="col-12 pb-3">
             <router-link :to="{ name: 'decks' }" role="button"
                          class="btn btn-primary w-100">
                 Back to Decks
@@ -59,17 +59,16 @@
 </template>
 
 <script>
-    import decks from './data'
+    import axios from 'axios'
 
     export default {
         name: 'Learn',
         data () {
-            const deck = decks.find((deck) => deck.slug === this.$route.params.deckSlug)
             const forward = this.$route.params.direction !== 'back'
 
             return {
-                deck: deck,
-                cards: deck.cards.slice(),
+                deck: {},
+                cards: [],
                 questionProp: forward ? 'front' : 'back',
                 questionClass: forward ? 'bg-success' : 'bg-dark',
                 answerProp: forward ? 'back' : 'front',
@@ -80,6 +79,13 @@
                 done: false
             }
         },
+        created () {
+            axios.get('http://127.0.0.1:9101/api/decks/' + this.$route.params.deckSlug)
+                .then(response => {
+                    this.deck = response.data
+                    this.cards = this.deck.cards.slice()
+                })
+        },
         watch: {
             guess () {
                 this.checkGuess()
@@ -87,10 +93,10 @@
         },
         computed: {
             question () {
-                return this.cards[0][this.questionProp]
+                return this.cards[0][this.questionProp].trim()
             },
             answer () {
-                return this.cards[0][this.answerProp]
+                return this.cards[0][this.answerProp].trim()
             }
         },
         methods: {

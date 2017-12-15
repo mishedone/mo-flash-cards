@@ -27,13 +27,12 @@
 
 <script>
     import axios from 'axios'
-    import decks from './data'
 
     export default {
         name: 'Decks',
         data () {
             return {
-                decks: decks
+                decks: []
             }
         },
         created () {
