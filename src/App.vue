@@ -32,8 +32,13 @@
             width: 25% !important;
         }
     }
+    
+    /* pointer cursor */
+    .pointer {
+        cursor: pointer;
+    }
 
-    /* center bottom popove arrow */
+    /* center bottom popovee arrow */
     .popover.bs-popover-bottom .arrow::before,
     .popover.bs-popover-bottom .arrow::after {
         margin-left: -50% !important;

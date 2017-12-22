@@ -14,8 +14,12 @@
             <div v-else class="row justify-content-center">
                 <div class="col-12 col-sm-6 col-md-4 mb-3">
                     <div class="card h-100 text-white" :class="[questionClass]">
-                        <div class="card-body d-flex align-items-center justify-content-center">
+                        <div class="card-body position-relative d-flex align-items-center justify-content-center">
                             {{ question }}
+                            <button type="button" class="btn btn-light btn-sm position-absolute pointer"
+                                    style="right: 5px; bottom: 5px;">
+                                <span class="oi oi-volume-high" title="Pronounce" aria-hidden="true"></span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -27,7 +31,7 @@
                                 <b-form-input type="text" ref="guessInput" v-model="guess"
                                               placeholder="Type in translation"></b-form-input>
                                 <b-input-group-button>
-                                    <b-button @click="showHint" variant="light">?</b-button>
+                                    <b-button @click="showHint" variant="light" class="pointer">?</b-button>
                                 </b-input-group-button>
                             </b-input-group>
 
