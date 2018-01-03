@@ -16,10 +16,15 @@
                     <div class="card h-100 text-white" :class="[questionClass]">
                         <div class="card-body position-relative d-flex align-items-center justify-content-center">
                             {{ question }}
-                            <button type="button" class="btn btn-light btn-sm position-absolute pointer"
-                                    style="right: 5px; bottom: 5px;">
+                            
+                            <button type="button"
+                                    class="btn btn-light btn-sm position-absolute pointer"
+                                    style="right: 5px; bottom: 5px;"
+                                    @click="pronounce">
                                 <span class="oi oi-volume-high" title="Pronounce" aria-hidden="true"></span>
                             </button>
+                            
+                            <audio ref="pronounce" :src="'http://127.0.0.1:9101/api/text-to-speech/' + question"></audio>
                         </div>
                     </div>
                 </div>
@@ -121,6 +126,9 @@
             showHint () {
                 this.hint = true
                 this.$refs.guessInput.$el.focus()
+            },
+            pronounce () {
+                this.$refs.pronounce.play()
             }
         }
     }
