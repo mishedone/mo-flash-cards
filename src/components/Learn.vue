@@ -23,8 +23,6 @@
                                     @click="pronounce">
                                 <span class="oi oi-volume-high" title="Pronounce" aria-hidden="true"></span>
                             </button>
-                            
-                            <audio ref="pronounce" :src="'http://127.0.0.1:9101/api/text-to-speech/' + question"></audio>
                         </div>
                     </div>
                 </div>
@@ -128,7 +126,8 @@
                 this.$refs.guessInput.$el.focus()
             },
             pronounce () {
-                this.$refs.pronounce.play()
+                const audio = new Audio('http://127.0.0.1:9101/api/text-to-speech/' + btoa(this.question))
+                audio.play()
             }
         }
     }
