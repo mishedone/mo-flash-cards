@@ -32,13 +32,18 @@
             width: 25% !important;
         }
     }
+
+    /* remove outlines */
+    a {
+        outline: 0;
+    }
     
     /* pointer cursor */
     .pointer {
         cursor: pointer;
     }
 
-    /* center bottom popovee arrow */
+    /* center bottom popover arrow */
     .popover.bs-popover-bottom .arrow::before,
     .popover.bs-popover-bottom .arrow::after {
         margin-left: -50% !important;
