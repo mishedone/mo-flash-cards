@@ -66,7 +66,7 @@
 </template>
 
 <script>
-    import axios from 'axios'
+    import api from '@/api'
 
     export default {
         name: 'Learn',
@@ -87,11 +87,10 @@
             }
         },
         created () {
-            axios.get('http://127.0.0.1:9101/api/decks/' + this.$route.params.deckSlug)
-                .then(response => {
-                    this.deck = response.data
-                    this.cards = this.deck.cards.slice()
-                })
+            api.getDeck(this.$route.params.deckSlug).then(response => {
+                this.deck = response.data
+                this.cards = this.deck.cards.slice()
+            })
         },
         watch: {
             guess () {
@@ -126,7 +125,7 @@
                 this.$refs.guessInput.$el.focus()
             },
             pronounce () {
-                const audio = new Audio('http://127.0.0.1:9101/api/text-to-speech/' + btoa(this.question))
+                const audio = new Audio('http://127.0.0.1:9101/text-to-speech/' + btoa(this.question))
                 audio.play()
             }
         }
