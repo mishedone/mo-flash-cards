@@ -12,7 +12,7 @@ class Api {
             })
     }
 
-    listDecks () {
+    getDecks () {
         return axios.get(this.root['decks'])
     }
 
