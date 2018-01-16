@@ -4,7 +4,7 @@
             <h1 class="h2">Choose your deck</h1>
         </div>
         
-        <div v-for="deck in decks.data" class="col-sm-4 col-lg-2"
+        <div v-for="deck in decks" class="col-sm-4 col-lg-2"
              :key="deck.slug">
             <div class="card mb-3">
                 <div class="card-body text-center">
@@ -26,14 +26,19 @@
 </template>
 
 <script>
-    import store from '@/store'
+    import api from '@/api'
 
     export default {
         name: 'Decks',
         data () {
             return {
-                decks: store.decks
+                decks: []
             }
+        },
+        created () {
+            api.getDecks().then(response => {
+                this.decks = response.data
+            })
         }
     }
 </script>

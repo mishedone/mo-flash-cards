@@ -98,11 +98,14 @@
             }
         },
         computed: {
+            current () {
+                return this.cards[0]
+            },
             question () {
-                return this.cards[0][this.questionProp].trim()
+                return this.current[this.questionProp].trim()
             },
             answer () {
-                return this.cards[0][this.answerProp].trim()
+                return this.current[this.answerProp].trim()
             }
         },
         methods: {
@@ -125,7 +128,7 @@
                 this.$refs.guessInput.$el.focus()
             },
             pronounce () {
-                const audio = new Audio('http://127.0.0.1:9101/text-to-speech/' + btoa(this.question))
+                const audio = new Audio(api.getPronounceUrl(this.question))
                 audio.play()
             }
         }
